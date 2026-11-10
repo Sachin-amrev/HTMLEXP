@@ -1,0 +1,147 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wingo Game - Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1e1e1e;
+            color: white;
+            margin: 0;
+            padding: 0;
+        }
+        .dashboard {
+            width: 90%;
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            background: linear-gradient(to bottom, #f7b733, #fc4a1a);
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .balance-card {
+            background: #2d2d2d;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+        }
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            margin: 15px 0;
+        }
+        button {
+            background-color: #ffcc00;
+            color: black;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 30%;
+            font-weight: bold;
+        }
+        .options {
+            background: #2d2d2d;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+        .option-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #444;
+        }
+        .option-item:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <h2>Welcome, <span id="userName">Player</span></h2>
+        <div class="balance-card">
+            <p>Your Balance: ₹<span id="balance">500</span></p>
+        </div><div class="button-group">
+        <button onclick="depositMoney()">Deposit</button>
+        <button onclick="withdrawMoney()">Withdraw</button>
+        <button onclick="window.location.href='game.html'">Start Game</button>
+    </div>
+
+    <div class="options">
+        <div class="option-item"><span>Game History</span> <span>📜</span></div>
+        <div class="option-item"><span>Transaction</span> <span>💰</span></div>
+        <div class="option-item"><span>Deposit History</span> <span>📥</span></div>
+        <div class="option-item"><span>Withdraw History</span> <span>📤</span></div>
+        <div class="option-item"><span>Notifications</span> <span>🔔</span></div>
+        <div class="option-item"><span>Gifts</span> <span>🎁</span></div>
+        <div class="option-item"><span>Game Statistics</span> <span>📊</span></div>
+    </div>
+
+    <div class="options">
+        <div class="option-item"><span>Language</span> <span>🌎 English</span></div>
+    </div>
+
+    <div class="options">
+        <h3>Service Center</h3>
+        <div class="option-item"><span>Settings</span> <span>⚙️</span></div>
+        <div class="option-item"><span>Feedback</span> <span>✉️</span></div>
+        <div class="option-item"><span>Customer Service</span> <span>🧑‍💻</span></div>
+        <div class="option-item"><span>Beginner’s Guide</span> <span>📖</span></div>
+        <div class="option-item"><span>About Us</span> <span>ℹ️</span></div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        let userPhone = localStorage.getItem('userPhone');
+        if (userPhone) {
+            document.getElementById('userName').innerText = userPhone;
+        }
+
+        let balance = localStorage.getItem('userBalance') || 500;
+        document.getElementById('balance').innerText = balance;
+    });
+
+    function depositMoney() {
+        let amount = prompt("Enter deposit amount (Min ₹100, Max ₹50,000):");
+        if (amount && !isNaN(amount)) {
+            amount = parseInt(amount);
+            if (amount >= 100 && amount <= 50000) {
+                let balance = parseInt(localStorage.getItem('userBalance') || 500);
+                balance += amount;
+                localStorage.setItem('userBalance', balance);
+                document.getElementById('balance').innerText = balance;
+                alert("₹" + amount + " added successfully!");
+            } else {
+                alert("Deposit amount must be between ₹100 and ₹50,000!");
+            }
+        }
+    }
+
+    function withdrawMoney() {
+        let amount = prompt("Enter withdrawal amount (Min ₹110, Max ₹50,000):");
+        let balance = parseInt(localStorage.getItem('userBalance') || 500);
+        if (amount && !isNaN(amount)) {
+            amount = parseInt(amount);
+            if (amount >= 110 && amount <= 50000 && amount <= balance) {
+                balance -= amount;
+                localStorage.setItem('userBalance', balance);
+                document.getElementById('balance').innerText = balance;
+                alert("₹" + amount + " withdrawn successfully!");
+            } else if (amount < 110) {
+                alert("Minimum withdrawal amount is ₹110!");
+            } else if (amount > 50000) {
+                alert("Maximum withdrawal limit is ₹50,000!");
+            } else {
+                alert("Insufficient balance!");
+            }
+        }
+    }
+</script>
+
+</body>
+</html>

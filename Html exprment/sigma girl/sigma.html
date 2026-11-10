@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Your Phone is Hacked!</title>
+    <style>
+        body {
+            background-color: black;
+            color: red;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            font-size: 40px;
+            overflow: hidden;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .warning {
+            font-weight: bold;
+            text-shadow: 5px 5px 10px red;
+            animation: blink 0.8s infinite alternate;
+        }
+        @keyframes blink {
+            from {opacity: 0;}
+            to {opacity: 1;}
+        }
+    </style>
+</head>
+<body>
+
+    <div class="warning">YOUR PHONE IS HACKED!</div>
+
+    <script>
+        // Stop user interaction
+        document.body.style.pointerEvents = "none";
+
+        // Prevent closing tab
+        window.onbeforeunload = function() {
+            return "Your phone is hacked! Do not close.";
+        };
+
+        // Play scary sound
+        let audio = new Audio("https://www.fesliyanstudios.com/play-mp3/4385");
+        audio.loop = true;
+        audio.play();
+
+        // Make screen vibrate (if supported)
+        function vibratePhone() {
+            if (navigator.vibrate) {
+                navigator.vibrate([1000, 500, 1000, 500]); 
+            }
+        }
+        vibratePhone();
+
+        // Restore message after 2.5 minutes
+        setTimeout(() => {
+            document.body.style.backgroundColor = "green";
+            document.body.innerHTML = "<h1 style='color: white;'>PHONE HAS BEEN RESTORED!</h1>";
+            audio.pause();
+            document.body.style.pointerEvents = "auto";
+        }, 150000); // 2.5 minutes
+
+    </script>
+
+</body>
+</html>

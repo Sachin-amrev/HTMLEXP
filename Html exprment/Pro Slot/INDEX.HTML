@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Casino Slot Machine</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            background-color: #222;
+            color: white;
+        }
+        .wallet {
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 10px;
+            color: gold;
+        }
+        .deposit-container {
+            margin-top: 10px;
+        }
+        .deposit-button {
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+            background-color: green;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            color: white;
+            margin-top: 10px;
+        }
+        .deposit-input {
+            width: 100px;
+            padding: 5px;
+            font-size: 18px;
+            text-align: center;
+        }
+        .slot-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 30px;
+        }
+        .slot {
+            width: 80px;
+            height: 80px;
+            font-size: 50px;
+            text-align: center;
+            line-height: 80px;
+            border: 3px solid gold;
+            margin: 10px;
+            background: black;
+            border-radius: 10px;
+        }
+        .spin-button {
+            padding: 15px 30px;
+            font-size: 20px;
+            margin-top: 20px;
+            cursor: pointer;
+            background-color: gold;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            color: black;
+        }
+        .result-message {
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 20px;
+            display: none;
+        }
+        @keyframes spin {
+            0% { transform: rotateX(0deg); }
+            100% { transform: rotateX(360deg); }
+        }
+        .spinning {
+            animation: spin 0.5s linear infinite;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎰 Slot Machine 🎰</h1>
+    
+    <div class="wallet">💰 Balance: ₹<span id="balance">1000</span></div>
+
+    <div class="slot-container">
+        <div class="slot" id="slot1">🍒</div>
+        <div class="slot" id="slot2">🍋</div>
+        <div class="slot" id="slot3">🍉</div>
+    </div>
+    
+    <button class="spin-button" id="spinButton" onclick="spin()">SPIN (₹100)</button>
+
+    <div id="resultMessage" class="result-message"></div> 
+
+    <!-- Only Spin Sound -->
+    <audio id="slotSpinSound" src="https://www.fesliyanstudios.com/play-mp3/5202" preload="auto"></audio>
+
+    <script>
+        let balance = 1000;
+        const spinCost = 100;
+        const symbols = ["🍒", "🍋", "🍉", "🍎", "🍊", "🍇", "⭐"];
+        let spinning = false; 
+        let winCounter = 0;  
+
+        function spin() {
+            if (spinning) return; 
+            if (balance < spinCost) {
+                document.getElementById("resultMessage").innerText = "Not enough balance!";
+                document.getElementById("resultMessage").style.display = "block";
+                return;
+            }
+
+            spinning = true; 
+            document.getElementById("spinButton").disabled = true;
+
+            balance -= spinCost;
+            document.getElementById("balance").innerText = balance;
+
+            let spinSound = document.getElementById("slotSpinSound");
+            spinSound.play();
+
+            let slot1 = document.getElementById("slot1");
+            let slot2 = document.getElementById("slot2");
+            let slot3 = document.getElementById("slot3");
+
+            slot1.classList.add("spinning");
+            slot2.classList.add("spinning");
+            slot3.classList.add("spinning");
+
+            setTimeout(() => {
+                slot1.classList.remove("spinning");
+                slot2.classList.remove("spinning");
+                slot3.classList.remove("spinning");
+
+                spinSound.pause();  
+                spinSound.currentTime = 0;
+
+                let result1, result2, result3;
+
+                // Increased winning probability
+                winCounter++;
+                if (winCounter % 3 === 0) { 
+                    let winSymbol = symbols[Math.floor(Math.random() * symbols.length)];
+                    result1 = result2 = result3 = winSymbol;
+                } else {
+                    result1 = symbols[Math.floor(Math.random() * symbols.length)];
+                    result2 = symbols[Math.floor(Math.random() * symbols.length)];
+                    result3 = symbols[Math.floor(Math.random() * symbols.length)];
+                }
+
+                slot1.innerText = result1;
+                slot2.innerText = result2;
+                slot3.innerText = result3;
+
+                if (result1 === result2 && result2 === result3) {
+                    let winAmount = spinCost * 2; 
+                    balance += winAmount;
+                    document.getElementById("balance").innerText = balance;
+                    document.getElementById("resultMessage").innerText = `🎉 Congratulations! You won ₹${winAmount}!`;
+                } else {
+                    document.getElementById("resultMessage").innerText = "❌ Try Again!";
+                }
+
+                document.getElementById("resultMessage").style.display = "block";
+
+                spinning = false; 
+                document.getElementById("spinButton").disabled = false;
+
+                if (balance < spinCost) {
+                    document.getElementById("spinButton").disabled = true;
+                    document.getElementById("spinButton").innerText = "Insufficient Balance";
+                }
+            }, 2000);
+        }
+
+        function deposit() {
+            let depositInput = document.getElementById("depositAmount");
+            let depositValue = parseInt(depositInput.value);
+
+            if (isNaN(depositValue) || depositValue < 100 || depositValue > 50000) {
+                alert("Deposit should be between ₹100 and ₹50000!");
+                return;
+            }
+
+            balance += depositValue;
+            document.getElementById("balance").innerText = balance;
+            depositInput.value = "";
+            document.getElementById("spinButton").disabled = false;
+            document.getElementById("spinButton").innerText = "SPIN (₹100)";
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hacking in Progress...</title>
+    <style>
+        body {
+            background-color: black;
+            color: green;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 18px;
+            padding: 20px;
+        }
+        #hackingText {
+            white-space: pre-line;
+        }
+    </style>
+</head>
+<body>
+    <h2>Initializing Hack...</h2>
+    <p id="hackingText"></p>
+    <script>
+        const text = [
+            "[ACCESS GRANTED]",
+            "Connecting to server...",
+            "Bypassing firewall...",
+            "Extracting data...",
+            "Injecting trojan...",
+            "Disabling security...",
+            "Download complete!",
+            "[DISCONNECTING...]"
+        ];
+        
+        let index = 0;
+        function typeEffect() {
+            if (index < text.length) {
+                document.getElementById("hackingText").innerHTML += text[index] + "\n";
+                index++;
+                setTimeout(typeEffect, 1000); // Speed of text display
+            }
+        }
+        typeEffect();
+    </script>
+</body>
+</html>

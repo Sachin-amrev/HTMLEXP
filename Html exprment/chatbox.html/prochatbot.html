@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔥 Smart AI Chatbot 🔥</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; background-color: #1e1e1e; color: white; }
+        #chatbox { width: 350px; height: 400px; border: 2px solid #fff; margin: 20px auto; padding: 10px; overflow-y: auto; background: black; }
+        input { width: 75%; padding: 10px; margin-top: 10px; }
+        button { padding: 10px; cursor: pointer; background: red; color: white; border: none; }
+        .message { text-align: left; margin: 5px 0; }
+        .user { color: cyan; }
+        .bot { color: lime; }
+    </style>
+</head>
+<body>
+    <h1>🔥 Attitude AI Chatbot 🔥</h1>
+    <div id="chatbox"></div>
+    <input type="text" id="userInput" placeholder="Type kar aur dekh! 😎">
+    <button onclick="sendMessage()">Bhej de! 💬</button>
+
+    <script>
+        const responses = {
+            "hello": ["Arrey hello baby! 😘", "Yo! Kaise ho? 😎", "Hello ji! Kya chal raha hai? 🔥"],
+            "kaisa hai": ["Mast! Tu bata? ❤️", "Zinda hoon, teri yaadon mein! 😍", "Bore ho raha tha, tu aa gaya! 😆"],
+            "love you": ["Awww, main bhi tujhe bohot pyar karti hoon! 😘", "Itna pyar! Mujhe sharm aa rahi hai! 🙈", "Pyaar toh pagalpan hai, aur main pagal hoon! ❤️"],
+            "kya kar rahe ho": ["Tere saath chat kar raha hoon! 🤩", "Abhi toh chill maar raha tha! 😎", "Tujhe sun raha hoon, bol baby! 🔥"],
+            "bye": ["Mat ja baby! 😭", "Bye bye, yaad rakhna! ❤️", "Arey ruk ja, aur baat kar! 😢"],
+        };
+
+        function getRandomReply(key) {
+            let replies = responses[key];
+            return replies ? replies[Math.floor(Math.random() * replies.length)] : "Mujhe yeh samajh nahi aaya, lekin tu mast hai! 🤔";
+        }
+
+        function sendMessage() {
+            let input = document.getElementById("userInput").value.toLowerCase().trim();
+            let chatbox = document.getElementById("chatbox");
+
+            if (input === "") return;
+            
+            chatbox.innerHTML += `<p class="message user"><strong>Tu:</strong> ${input}</p>`;
+
+            setTimeout(() => {
+                let reply = getRandomReply(input);
+                chatbox.innerHTML += `<p class="message bot"><strong>Chatbot:</strong> ${reply}</p>`;
+                chatbox.scrollTop = chatbox.scrollHeight;
+            }, 500);
+
+            document.getElementById("userInput").value = "";
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lottery Game</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Lottery Betting Game</h1>
+    </header>
+
+    <section id="gameSection">
+        <h2>Place Your Bet</h2>
+        <div>
+            <label for="betAmount">Enter Bet Amount (₹): </label>
+            <input type="number" id="betAmount" min="1">
+        </div>
+
+        <div>
+            <label for="betOption">Choose your Bet Option: </label>
+            <select id="betOption">
+                <option value="small">Small</option>
+                <option value="big">Big</option>
+                <option value="number">Number</option>
+                <option value="green">Green</option>
+                <option value="wallet">Wallet</option>
+            </select>
+        </div>
+
+        <button onclick="placeBet()">Place Bet</button>
+
+        <h2>Lottery Result</h2>
+        <p id="resultMessage"></p>
+        <p id="winningsMessage"></p>
+    </section>
+
+    <footer>
+        <p>Good Luck! May the odds be in your favor!</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

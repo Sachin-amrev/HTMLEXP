@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spin Wheel Game</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1 class="game-title">Spin Wheel Game</h1>
+    <div class="main-content">
+      <div class="left-section">
+        <div class="withdraw-section">
+          <h2>Withdraw Money</h2>
+          <input type="text" id="bank-account" placeholder="Bank Account Number">
+          <input type="text" id="ifsc-code" placeholder="IFSC Code">
+          <input type="number" id="withdraw-amount" placeholder="Enter amount (min ₹110)">
+          <button onclick="withdrawAmount()">Withdraw</button>
+          <p id="withdraw-message"></p>
+        </div>
+      </div>
+      <div class="center-section">
+        <div class="wheel-container">
+          <div class="wheel">
+            <div class="prize" style="--i:1; --clr:#ffcc00;">
+              <div class="prize-content">Smartphone</div>
+            </div>
+            <div class="prize" style="--i:2; --clr:#ff6666;">
+              <div class="prize-content">iPhone</div>
+            </div>
+            <div class="prize" style="--i:3; --clr:#66ccff;">
+              <div class="prize-content">₹300</div>
+            </div>
+            <div class="prize" style="--i:4; --clr:#99ff99;">
+              <div class="prize-content">₹400</div>
+            </div>
+            <div class="prize" style="--i:5; --clr:#ff9966;">
+              <div class="prize-content">₹500</div>
+            </div>
+            <div class="prize" style="--i:6; --clr:#cc99ff;">
+              <div class="prize-content">₹600</div>
+            </div>
+            <div class="prize" style="--i:7; --clr:#ffcc99;">
+              <div class="prize-content">₹700</div>
+            </div>
+            <div class="prize" style="--i:8; --clr:#66ffcc;">
+              <div class="prize-content">₹800</div>
+            </div>
+          </div>
+          <div class="spin-btn" onclick="spinWheel()">Spin</div>
+        </div>
+        <div id="result"></div>
+        <div id="wallet-balance">Wallet Balance: ₹0</div>
+      </div>
+      <div class="right-section">
+        <div class="recharge-section">
+          <h2>Recharge Wallet</h2>
+          <select id="upi-option">
+            <option value="">Select UPI App</option>
+            <option value="phonepe">PhonePe</option>
+            <option value="googlepay">Google Pay</option>
+            <option value="paytm">Paytm</option>
+          </select>
+          <input type="number" id="recharge-amount" placeholder="Enter recharge amount">
+          <button onclick="rechargeWallet()">Recharge</button>
+          <p id="recharge-message"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

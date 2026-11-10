@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Love Shayari App</title>
+  <style>
+    body {
+      background: #fff2f2;
+      font-family: 'Segoe UI', sans-serif;
+      color: #444;
+      text-align: center;
+      padding: 30px;
+    }
+    .container {
+      background-color: #ffe6e6;
+      padding: 30px;
+      border-radius: 20px;
+      max-width: 500px;
+      margin: auto;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+    h2 {
+      font-size: 22px;
+    }
+    input, select, button {
+      padding: 10px;
+      margin-top: 15px;
+      font-size: 16px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background: #ff4d6d;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #e60039;
+    }
+    #shayariBox {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container" id="welcomeBox">
+    <h2>Apka Naam kya hai, baby?</h2>
+    <input type="text" id="userName" placeholder="Apka naam likhiye"><br>
+    <h3>Category choose karo:</h3>
+    <select id="category">
+      <option value="love">Love</option>
+      <option value="sad">Sad</option>
+      <option value="romantic">Romantic</option>
+    </select><br>
+    <button onclick="startApp()">Start Shayari</button>
+  </div>
+
+  <div class="container" id="shayariBox">
+    <h2 id="shayariHeading"></h2>
+    <p id="shayariText">Yahan Shayari aayegi...</p>
+    <button onclick="nextShayari()">Next</button>
+  </div>
+
+  <script>
+    const shayaris = {
+      love: [
+        "Tumhari muskurahat meri pehchan hai,<br> Tum khush raho yehi meri shaan hai...",
+        "Tere bina jee na payenge hum,<br> Tujhe bhoolna mushkil hai sanam..."
+      ],
+      sad: [
+        "Chhupaye the hum dard dil ke,<br> Magar aansu keh gaye kahani...",
+        "Dil to udaas hai na jaane kis baat ka,<br> Shayad kisi ki yaad aayi hai..."
+      ],
+      romantic: [
+        "Teri aankhon mein mohabbat ki chamak hai,<br> Har pal tumse milne ki kasak hai...",
+        "Tum mile to zindagi mein noor aaya,<br> Har taraf khushiyo ka jahan chhaya..."
+      ]
+    };
+
+    let user = '';
+    let selectedCategory = '';
+    let currentIndex = 0;
+
+    function startApp() {
+      user = document.getElementById("userName").value.trim();
+      selectedCategory = document.getElementById("category").value;
+
+      if (user === '') {
+        alert("Baby naam to likho!");
+        return;
+      }
+
+      document.getElementById("welcomeBox").style.display = "none";
+      document.getElementById("shayariBox").style.display = "block";
+      document.getElementById("shayariHeading").innerHTML = `Aapke liye, ${user}`;
+      showShayari();
+    }
+
+    function showShayari() {
+      const list = shayaris[selectedCategory];
+      document.getElementById("shayariText").innerHTML = list[currentIndex];
+    }
+
+    function nextShayari() {
+      const list = shayaris[selectedCategory];
+      currentIndex = (currentIndex + 1) % list.length;
+      showShayari();
+    }
+  </script>
+
+</body>
+</html>

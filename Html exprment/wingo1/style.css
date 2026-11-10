@@ -1,0 +1,72 @@
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #1a1a40, #121230); /* Dark Blue to Deep Navy */
+    color: white;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.login-container, .signup-container {
+    background: rgba(30, 30, 60, 0.95); /* Dark Blue Transparent */
+    padding: 25px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0px 4px 10px rgba(255, 215, 0, 0.3); /* Golden Glow */
+    width: 90%;
+    max-width: 350px;
+}
+
+h2 {
+    margin-bottom: 15px;
+    font-size: 22px;
+    color: #ffd700; /* Gold Color */
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    background: #2c2c5a; /* Deep Blue */
+    color: white;
+    border: 1px solid #555;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background: #007bff; /* Vibrant Blue */
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+    color: white;
+}
+
+button:hover {
+    background: #ffd700; /* Gold Hover */
+    color: black;
+}
+
+p {
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+a {
+    color: #ffcc00;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+a:hover {
+    text-decoration: underline;
+}

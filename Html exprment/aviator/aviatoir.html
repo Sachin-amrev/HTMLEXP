@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aviator Game 🚀</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #222;
+            color: white;
+        }
+        #gameContainer {
+            position: relative;
+            width: 300px;
+            height: 400px;
+            border: 2px solid white;
+            margin: auto;
+            overflow: hidden;
+            background-color: #111;
+        }
+        #plane {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            transition: bottom 0.1s linear;
+        }
+        #multiplier {
+            font-size: 24px;
+            margin-top: 10px;
+        }
+        #betAmount, #autoCashout {
+            width: 100px;
+            padding: 5px;
+            margin: 10px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 18px;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+            border-radius: 5px;
+        }
+        #startGame {
+            background: green;
+            color: white;
+        }
+        #cashout {
+            background: red;
+            color: white;
+        }
+        #startGame:hover {
+            background: darkgreen;
+        }
+        #cashout:hover {
+            background: darkred;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Aviator Game 🚀</h1>
+    <p>Multiplier: <span id="multiplier">1.0x</span></p>
+
+    <label>Bet ₹:</label>
+    <input type="number" id="betAmount" value="10" min="10" step="10"><br>
+
+    <label>Auto Cashout (x):</label>
+    <input type="number" id="autoCashout" value="2.0" min="1.1" step="0.1"><br>
+
+    <button id="startGame" onclick="startGame()">START GAME 🎮</button>
+    <button id="cashout" onclick="cashOut()">CASH OUT 💰</button>
+
+    <div id="gameContainer">
+        <img id="plane" src="https://cdn-icons-png.flaticon.com/512/705/705062.png" alt="Plane">
+    </div>
+
+    <script>
+        let multiplier = 1.0;
+        let plane = document.getElementById("plane");
+        let multiplierText = document.getElementById("multiplier");
+        let betAmount = document.getElementById("betAmount");
+        let autoCashout = document.getElementById("autoCashout");
+        let crashPoint = 0;
+        let gameRunning = false;
+        let interval;
+
+        function startGame() {
+            if (gameRunning) return;
+
+            multiplier = 1.0;
+            multiplierText.innerText = "1.0x";
+            plane.style.bottom = "10px";
+            crashPoint = (Math.random() * 5) + 1; // Random crash between 1x - 6x
+            gameRunning = true;
+
+            interval = setInterval(() => {
+                if (!gameRunning) {
+                    clearInterval(interval);
+                    return;
+                }
+
+                multiplier += 0.1;
+                multiplierText.innerText = multiplier.toFixed(1) + "x";
+                plane.style.bottom = (multiplier * 20) + "px";
+
+                if (multiplier >= parseFloat(autoCashout.value)) {
+                    cashOut(true);
+                }
+
+                if (multiplier >= crashPoint) {
+                    gameRunning = false;
+                    alert("💥 CRASH! You lost ₹" + betAmount.value);
+                    resetGame();
+                }
+            }, 500);
+        }
+
+        function cashOut(auto = false) {
+            if (!gameRunning) return;
+
+            let winnings = (betAmount.value * multiplier).toFixed(2);
+            alert(auto ? "✅ Auto Cashed Out! You won ₹" + winnings : "✅ You cashed out at " + multiplier.toFixed(1) + "x! You won ₹" + winnings);
+
+            gameRunning = false;
+            resetGame();
+        }
+
+        function resetGame() {
+            setTimeout(() => {
+                gameRunning = false;
+                multiplier = 1.0;
+                multiplierText.innerText = "1.0x";
+                plane.style.bottom = "10px";
+            }, 3000);
+        }
+    </script>
+
+</body>
+</html>

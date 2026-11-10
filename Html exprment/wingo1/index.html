@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Win11 Club</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="logo">Win11 Club</h1>
+        <div class="register-box">
+            <h2>Login</h2>
+            <p>Enter your details to login</p>
+            
+            <div class="input-group">
+                <label>Phone Number</label>
+                <input type="text" id="loginPhone" placeholder="Enter phone number">
+            </div>
+
+            <div class="input-group">
+                <label>Password</label>
+                <div class="password-input">
+                    <input type="password" id="loginPassword" placeholder="Enter password">
+                    <span onclick="togglePassword('loginPassword')">👁️</span>
+                </div>
+            </div>
+
+            <button onclick="login()">Login</button>
+            
+            <p>Don't have an account? <a href="register.html">Register</a></p>
+        </div>
+    </div>
+
+    <script>
+        function login() {
+            let phone = document.getElementById('loginPhone').value;
+            let password = document.getElementById('loginPassword').value;
+            
+            let savedPhone = localStorage.getItem("userPhone");
+            let savedPassword = localStorage.getItem("userPassword");
+
+            if (phone === savedPhone && password === savedPassword) {
+                alert("Login Successful!");
+                window.location.href = "dashboard.html"; // Next page after login
+            } else {
+                alert("Invalid phone number or password!");
+            }
+        }
+
+        function togglePassword(id) {
+            let input = document.getElementById(id);
+            input.type = (input.type === "password") ? "text" : "password";
+        }
+    </script>
+</body>
+</html>

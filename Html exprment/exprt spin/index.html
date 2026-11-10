@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spin Wheel Game</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background-color: #f0f0f0;
+      padding: 20px;
+    }
+
+    .container {
+      text-align: center;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .game-title {
+      margin-bottom: 20px;
+      font-size: 24px;
+      color: #333;
+    }
+
+    .withdraw-section {
+      margin-bottom: 20px;
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .withdraw-section h2 {
+      margin-bottom: 10px;
+      font-size: 20px;
+      color: #333;
+    }
+
+    .withdraw-section input,
+    .withdraw-section button {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    .withdraw-section button {
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    .withdraw-section button:hover {
+      background-color: #45a049;
+    }
+
+    #withdraw-message {
+      margin-top: 10px;
+      font-size: 14px;
+      color: #d32f2f;
+    }
+
+    .wheel-container {
+      position: relative;
+      width: 100%;
+      max-width: 300px;
+      margin: 0 auto;
+    }
+
+    .wheel {
+      width: 100%;
+      height: 300px;
+      border-radius: 50%;
+      position: relative;
+      overflow: hidden;
+      border: 5px solid #333;
+      transition: transform 5s ease-in-out;
+    }
+
+    .prize {
+      position: absolute;
+      width: 50%;
+      height: 50%;
+      background-color: var(--clr);
+      transform-origin: bottom right;
+      transform: rotate(calc(45deg * var(--i)));
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+      color: white;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    }
+
+    .prize-content {
+      transform: rotate(-45deg);
+      text-align: center;
+    }
+
+    .spin-btn {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 60px;
+      height: 60px;
+      background-color: #ff3333;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      font-weight: bold;
+      text-transform: uppercase;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    }
+
+    #result {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    #wallet-balance {
+      margin-top: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      color: #4caf50;
+    }
+
+    .recharge-section {
+      margin-top: 20px;
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .recharge-section h2 {
+      margin-bottom: 10px;
+      font-size: 20px;
+      color: #333;
+    }
+
+    .recharge-section select,
+    .recharge-section input,
+    .recharge-section button {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    .recharge-section button {
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    .recharge-section button:hover {
+      background-color: #45a049;
+    }
+
+    #recharge-message {
+      margin-top: 10px;
+      font-size: 14px;
+      color: #d32f2f;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="game-title">Spin Wheel Game</h1>
+
+    <!-- Withdraw Section (Top) -->
+    <div class="withdraw-section">
+      <h2>Withdraw Money</h2>
+      <input type="text" id="bank-account" placeholder="Bank Account Number">
+      <input type="text" id="ifsc-code" placeholder="IFSC Code">
+      <input type="number" id="withdraw-amount" placeholder="Enter amount (min ₹110)">
+      <button onclick="withdrawAmount()">Withdraw</button>
+      <p id="withdraw-message"></p>
+    </div>
+
+    <!-- Wheel Section (Middle) -->
+    <div class="wheel-container">
+      <div class="wheel">
+        <div class="prize" style="--i:1; --clr:#ffcc00;">
+          <div class="prize-content">Smartphone</div>
+        </div>
+        <div class="prize" style="--i:2; --clr:#ff6666;">
+          <div class="prize-content">iPhone</div>
+        </div>
+        <div class="prize" style="--i:3; --clr:#66ccff;">
+          <div class="prize-content">₹300</div>
+        </div>
+        <div class="prize" style="--i:4; --clr:#99ff99;">
+          <div class="prize-content">₹400</div>
+        </div>
+        <div class="prize" style="--i:5; --clr:#ff9966;">
+          <div class="prize-content">₹500</div>
+        </div>
+        <div class="prize" style="--i:6; --clr:#cc99ff;">
+          <div class="prize-content">₹600</div>
+        </div>
+        <div class="prize" style="--i:7; --clr:#ffcc99;">
+          <div class="prize-content">₹700</div>
+        </div>
+        <div class="prize" style="--i:8; --clr:#66ffcc;">
+          <div class="prize-content">₹800</div>
+        </div>
+      </div>
+      <div class="spin-btn" onclick="spinWheel()">Spin</div>
+    </div>
+    <div id="result"></div>
+    <div id="wallet-balance">Wallet Balance: ₹0</div>
+
+    <!-- Recharge Section (Bottom) -->
+    <div class="recharge-section">
+      <h2>Recharge Wallet</h2>
+      <select id="upi-option">
+        <option value="">Select UPI App</option>
+        <option value="phonepe">PhonePe</option>
+        <option value="googlepay">Google Pay</option>
+        <option value="paytm">Paytm</option>
+      </select>
+      <input type="number" id="recharge-amount" placeholder="Enter recharge amount">
+      <button onclick="rechargeWallet()">Recharge</button>
+      <p id="recharge-message"></p>
+    </div>
+  </div>
+
+  <script>
+    const wheel = document.querySelector(".wheel");
+    const spinBtn = document.querySelector(".spin-btn");
+    const resultText = document.getElementById("result");
+    const walletBalance = document.getElementById("wallet-balance");
+    const bankAccountInput = document.getElementById("bank-account");
+    const ifscCodeInput = document.getElementById("ifsc-code");
+    const withdrawAmountInput = document.getElementById("withdraw-amount");
+    const withdrawMessage = document.getElementById("withdraw-message");
+    const rechargeAmountInput = document.getElementById("recharge-amount");
+    const rechargeMessage = document.getElementById("recharge-message");
+    const upiOption = document.getElementById("upi-option");
+
+    // UPI Links for different apps
+    const upiLinks = {
+      phonepe: "upi://pay?pa=9461933230@ybl&pn=YourName&mc=0000&tid=123456&tr=123456&tn=Recharge&am=100&cu=INR",
+      googlepay: "upi://pay?pa=9461933230@okhdfcbank&pn=YourName&mc=0000&tid=123456&tr=123456&tn=Recharge&am=100&cu=INR",
+      paytm: "upi://pay?pa=9461933230@paytm&pn=YourName&mc=0000&tid=123456&tr=123456&tn=Recharge&am=100&cu=INR",
+    };
+
+    // Event listener for UPI option change
+    upiOption.addEventListener("change", function () {
+      const selectedOption = this.value;
+      if (selectedOption && upiLinks[selectedOption]) {
+        window.location.href = upiLinks[selectedOption];
+      }
+    });
+
+    // Prizes array
+    const prizes = [
+      { type: "text", value: "Smartphone" },
+      { type: "text", value: "iPhone" },
+      { type: "text", value: "₹300" },
+      { type: "text", value: "₹400" },
+      { type: "text", value: "₹500" },
+      { type: "text", value: "₹600" },
+      { type: "text", value: "₹700" },
+      { type: "text", value: "₹800" },
+    ];
+
+    let balance = 0;
+    let rechargeBalance = 0; // Separate balance for recharged amount
+    let playAmount = 0; // Track amount played
+
+    // Spin wheel function
+    function spinWheel() {
+      // Disable button during spin
+      spinBtn.disabled = true;
+
+      // Random rotation
+      const randomDegree = Math.floor(Math.random() * 360) + 1440; // 1440 = 4 full rotations
+      wheel.style.transform = `rotate(${randomDegree}deg)`;
+
+      // Calculate prize
+      setTimeout(() => {
+        const actualDegree = randomDegree % 360;
+        const prizeIndex = Math.floor((actualDegree + 22.5) / 45) % 8; // 45 = 360/8
+        const prize = prizes[prizeIndex];
+
+        // Show result
+        if (prize.type === "text") {
+          if (prize.value.startsWith("₹")) {
+            const amount = parseInt(prize.value.replace("₹", ""));
+            balance += amount;
+            playAmount += amount; // Track played amount
+          }
+          resultText.innerText = `Congratulations! You won: ${prize.value}`;
+        }
+
+        walletBalance.innerText = `Wallet Balance: ₹${balance}`;
+        spinBtn.disabled = false;
+      }, 5000); // Wait for spin to finish
+    }
+
+    // Withdraw function
+    function withdrawAmount() {
+      const bankAccount = bankAccountInput.value.trim();
+      const ifscCode = ifscCodeInput.value.trim();
+      const amount = parseInt(withdrawAmountInput.value);
+
+      if (!bankAccount || !ifscCode) {
+        withdrawMessage.innerText = "Please enter bank account details.";
+        return;
+      }
+
+      if (isNaN(amount) || amount < 110) {
+        withdrawMessage.innerText = "Minimum withdraw amount is ₹110.";
+        return;
+      }
+
+      if (amount > balance - rechargeBalance) {
+        withdrawMessage.innerText = "Insufficient balance (recharged amount cannot be withdrawn).";
+        return;
+      }
+
+      if (amount > playAmount) {
+        withdrawMessage.innerText = "You must play at least ₹" + amount + " to withdraw.";
+        return;
+      }
+
+      balance -= amount;
+      playAmount -= amount; // Deduct from played amount
+      walletBalance.innerText = `Wallet Balance: ₹${balance}`;
+      withdrawMessage.innerText = `₹${amount} withdrawn successfully!`;
+      bankAccountInput.value = "";
+      ifscCodeInput.value = "";
+      withdrawAmountInput.value = "";
+    }
+
+    // Recharge function
+    function rechargeWallet() {
+      const amount = parseInt(rechargeAmountInput.value);
+
+      if (isNaN(amount) || amount <= 0) {
+        rechargeMessage.innerText = "Please enter a valid amount.";
+        return;
+      }
+
+      balance += amount;
+      rechargeBalance += amount; // Track recharged amount
+      walletBalance.innerText = `Wallet Balance: ₹${balance}`;
+      rechargeMessage.innerText = `₹${amount} recharged successfully!`;
+      rechargeAmountInput.value = "";
+    }
+  </script>
+</body>
+</html>

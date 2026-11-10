@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heart Prank</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: pink;
+            flex-direction: column;
+            font-family: Arial, sans-serif;
+        }
+        .heart-button {
+            width: 150px;
+            height: 150px;
+            background-color: red;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            color: white;
+            font-weight: bold;
+            border-radius: 50%;
+            cursor: pointer;
+            position: relative;
+            text-align: center;
+            transition: 0.3s;
+        }
+        .heart-button:hover {
+            transform: scale(1.1);
+        }
+        .hidden-heart {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 300px;
+            background-color: red;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 30px;
+            font-weight: bold;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="heart-button" onclick="showHeart()">OPEN</div>
+    
+    <div class="hidden-heart" id="hiddenHeart">Bhkk marugi kya dekhne aye ho🤬🤬</div>
+
+    <script>
+        function showHeart() {
+            document.getElementById("hiddenHeart").style.display = "flex";
+        }
+    </script>
+
+</body>
+</html>

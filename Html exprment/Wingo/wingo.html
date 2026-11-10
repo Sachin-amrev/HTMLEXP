@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wingo Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #222;
+            color: white;
+        }
+        .container {
+            margin-top: 20px;
+        }
+        .manual-selection {
+            margin-bottom: 20px;
+        }
+        .periods-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            width: 290px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            font-size: 16px;
+            color: yellow;
+        }
+        .period-entry {
+            display: flex;
+            justify-content: space-between;
+            width: 290px;
+            background: #444;
+            padding: 10px;
+            margin: 5px;
+            border-radius: 5px;
+            font-size: 16px;
+            color: white;
+        }
+        .btn {
+            padding: 15px;
+            font-size: 18px;
+            margin: 5px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            width: 60px;
+            height: 60px;
+            color: white;
+            text-shadow: 1px 1px 2px black;
+        }
+        .num-0 { background: linear-gradient(to bottom, green, violet); }
+        .num-1 { background: green; }
+        .num-2 { background: red; }
+        .num-3 { background: green; }
+        .num-4 { background: red; }
+        .num-5 { background: linear-gradient(to bottom, green, violet); }
+        .num-6 { background: red; }
+        .num-7 { background: green; }
+        .num-8 { background: red; }
+        .num-9 { background: green; }
+        .color-green { background: green; width: 100px; height: 50px; }
+        .color-violet { background: violet; width: 100px; height: 50px; }
+        .color-red { background: red; width: 100px; height: 50px; }
+        .big { background: yellow; color: black; width: 120px; height: 50px; }
+        .small { background: blue; color: white; width: 120px; height: 50px; }
+        .selected { border: 3px solid yellow !important; }
+        .result { margin-top: 20px; font-size: 20px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <h1>Wingo Game</h1>
+
+    <!-- Manual Selection Moves to the Top -->
+    <div class="container manual-selection">
+        <div class="colors">
+            <button class="btn color-green" onclick="selectColor('Green')">Green</button>
+            <button class="btn color-violet" onclick="selectColor('Violet')">Violet</button>
+            <button class="btn color-red" onclick="selectColor('Red')">Red</button>
+        </div>
+
+        <div class="numbers">
+            <button class="btn number num-0" onclick="selectNumber(0)">0</button>
+            <button class="btn number num-1" onclick="selectNumber(1)">1</button>
+            <button class="btn number num-2" onclick="selectNumber(2)">2</button>
+            <button class="btn number num-3" onclick="selectNumber(3)">3</button>
+            <button class="btn number num-4" onclick="selectNumber(4)">4</button>
+        </div>
+        
+        <div class="numbers">
+            <button class="btn number num-5" onclick="selectNumber(5)">5</button>
+            <button class="btn number num-6" onclick="selectNumber(6)">6</button>
+            <button class="btn number num-7" onclick="selectNumber(7)">7</button>
+            <button class="btn number num-8" onclick="selectNumber(8)">8</button>
+            <button class="btn number num-9" onclick="selectNumber(9)">9</button>
+        </div>
+
+        <div class="size-options">
+            <button class="btn big" onclick="selectSize('Big')">Big</button>
+            <button class="btn small" onclick="selectSize('Small')">Small</button>
+        </div>
+
+        <h3 class="result" id="result">Your Selection: </h3>
+    </div>
+
+    <!-- Automation Data Moves to the Bottom -->
+    <div class="container">
+        <div class="periods-container">
+            <div class="header">
+                <span>Period</span>
+                <span>Number</span>
+                <span>Big/Small</span>
+                <span>Color</span>
+            </div>
+            <div id="periods-list">
+                <!-- Auto-updating periods will be added here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function selectNumber(num) {
+            document.querySelectorAll('.number').forEach(btn => btn.classList.remove('selected'));
+            event.target.classList.add('selected');
+            document.getElementById('result').innerHTML = "Selected Number: " + num;
+        }
+
+        function selectColor(color) {
+            document.querySelectorAll('.colors .btn').forEach(btn => btn.classList.remove('selected'));
+            event.target.classList.add('selected');
+            document.getElementById('result').innerHTML += "<br>Selected Color: " + color;
+        }
+
+        function selectSize(size) {
+            document.querySelectorAll('.size-options .btn').forEach(btn => btn.classList.remove('selected'));
+            event.target.classList.add('selected');
+            document.getElementById('result').innerHTML += "<br>Selected Size: " + size;
+        }
+
+        let periods = [];
+        function updatePeriods() {
+            let now = new Date();
+            let period = now.getFullYear() + 
+                         (now.getMonth() + 1).toString().padStart(2, '0') + 
+                         now.getDate().toString().padStart(2, '0') +
+                         now.getHours().toString().padStart(2, '0') +
+                         now.getMinutes().toString().padStart(2, '0') +
+                         now.getSeconds().toString().padStart(2, '0');
+
+            let randomNumber = Math.floor(Math.random() * 10); // 0 to 9
+            let bigSmall = (randomNumber >= 5) ? "Big" : "Small";
+
+            let numColors = ["violet", "green", "red", "green", "red", "violet", "red", "green", "red", "green"];
+            let numColor = numColors[randomNumber];
+
+            periods.unshift({ period, number: randomNumber, bigSmall, color: numColor });
+            if (periods.length > 10) {
+                periods.pop();
+            }
+
+            let periodHTML = "";
+            periods.forEach(p => {
+                periodHTML += `<div class="period-entry">
+                                  <span>${p.period}</span>
+                                  <span>${p.number}</span>
+                                  <span class="big-small">${p.bigSmall}</span>
+                                  <span style="color:${p.color}; font-weight:bold;">⬤</span>
+                               </div>`;
+            });
+            document.getElementById("periods-list").innerHTML = periodHTML;
+        }
+
+        setInterval(updatePeriods, 1000);
+    </script>
+
+</body>
+</html>

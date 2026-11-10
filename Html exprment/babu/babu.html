@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surprise for My Baby</title>
+    <style>
+        body {
+            text-align: center;
+            background-color: pink;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        .gift-box {
+            width: 150px;
+            height: 150px;
+            background: red;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            line-height: 150px;
+            margin: 100px auto;
+            cursor: pointer;
+            border-radius: 10px;
+        }
+
+        .message {
+            display: none;
+            font-size: 24px;
+            font-weight: bold;
+            color: red;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+
+        .balloon {
+            position: absolute;
+            top: -50px;
+            font-size: 40px;
+            opacity: 0.8;
+            animation: fall 4s linear infinite;
+        }
+
+        @keyframes fall {
+            0% { top: -50px; opacity: 1; }
+            100% { top: 100vh; opacity: 0; }
+        }
+
+        .love-message {
+            display: none;
+            font-size: 30px;
+            font-weight: bold;
+            color: purple;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            top: 20%;
+            animation: fade 2s infinite;
+        }
+
+        @keyframes fade {
+            0% { opacity: 0; }
+            50% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="gift-box" onclick="openGift()">🎁 Open</div>
+    <div class="message" id="message" onclick="showBalloons()">I love you so much baby Vijay Babu 😘 😗 🥰 😛 💞 😘 😘 <br> Click Me! </div>
+    <div id="love-text" class="love-message">I LOVE YOU SO MUCH BABY! ❤️❤️❤️</div>
+
+    <script>
+        function openGift() {
+            document.querySelector('.gift-box').style.display = 'none';
+            document.getElementById('message').style.display = 'block';
+        }
+
+        function showBalloons() {
+            document.getElementById('message').style.display = 'none';
+
+            // Balloons and flowers falling effect
+            for (let i = 0; i < 30; i++) {
+                let balloon = document.createElement("div");
+                balloon.classList.add("balloon");
+                balloon.innerHTML = "🎈🌸";
+                balloon.style.left = Math.random() * window.innerWidth + "px";
+                balloon.style.animationDuration = (Math.random() * 3 + 2) + "s";
+                document.body.appendChild(balloon);
+
+                setTimeout(() => {
+                    balloon.remove();
+                }, 5000);
+            }
+
+            // Show "I Love You" text multiple times
+            setTimeout(() => {
+                document.getElementById('love-text').style.display = 'block';
+            }, 2000);
+        }
+    </script>
+
+</body>
+</html>

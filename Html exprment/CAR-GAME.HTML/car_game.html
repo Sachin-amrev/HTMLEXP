@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secret Car Game</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            background-color: black;
+            color: white;
+        }
+        #inputBox {
+            padding: 10px;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+        #gameCanvas {
+            display: none;
+            border: 2px solid white;
+            background-color: gray;
+        }
+    </style>
+</head>
+<body>
+    <h1>Type the Secret Word to Start</h1>
+    <input type="text" id="inputBox" placeholder="Type here..." onkeypress="checkInput(event)">
+    <canvas id="gameCanvas" width="400" height="500"></canvas>
+
+    <script>
+        function checkInput(event) {
+            if (event.key === "Enter") {
+                let inputText = document.getElementById("inputBox").value;
+                if (inputText.toLowerCase() === "start") {
+                    document.getElementById("inputBox").style.display = "none";
+                    document.getElementById("gameCanvas").style.display = "block";
+                    startGame();
+                } else {
+                    alert("Wrong Secret Word! Try again.");
+                }
+            }
+        }
+
+        function startGame() {
+            let canvas = document.getElementById("gameCanvas");
+            let ctx = canvas.getContext("2d");
+            let carX = 150, carY = 400;
+            let carWidth = 50, carHeight = 100;
+            let speed = 5;
+
+            document.addEventListener("keydown", function(event) {
+                if (event.key === "ArrowLeft" && carX > 0) {
+                    carX -= speed;
+                } else if (event.key === "ArrowRight" && carX < canvas.width - carWidth) {
+                    carX += speed;
+                }
+            });
+
+            function drawGame() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = "red";
+                ctx.fillRect(carX, carY, carWidth, carHeight);
+                requestAnimationFrame(drawGame);
+            }
+            drawGame();
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Voice Reader App</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #1e1e2f;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    textarea, select {
+      width: 100%;
+      max-width: 500px;
+      padding: 10px;
+      border-radius: 10px;
+      font-size: 16px;
+      margin-bottom: 15px;
+      background: #2d2d3f;
+      color: white;
+      border: none;
+    }
+
+    textarea {
+      height: 140px;
+      resize: none;
+    }
+
+    button {
+      padding: 12px 24px;
+      font-size: 18px;
+      border: none;
+      border-radius: 8px;
+      background: #4e9cff;
+      color: white;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #367acc;
+    }
+
+    #downloadBtn {
+      background: #28a745;
+      margin-top: 15px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Voice Reader</h1>
+  <textarea id="textInput" placeholder="Type something in Hindi or English..."></textarea>
+  <select id="voiceSelect"></select>
+  <button onclick="speak()">Speak</button>
+  <button id="downloadBtn" onclick="downloadMP3()">Download MP3</button>
+
+  <script>
+    const voiceSelect = document.getElementById("voiceSelect");
+    let voices = [];
+
+    function populateVoices() {
+      voices = speechSynthesis.getVoices();
+      voiceSelect.innerHTML = "";
+
+      voices.forEach((voice, index) => {
+        const option = document.createElement("option");
+        option.value = index;
+        option.textContent = `${voice.name} (${voice.lang})${voice.default ? " - Default" : ""}`;
+        if (voice.lang.includes("hi") || (voice.lang.includes("en-IN") && voice.name.toLowerCase().includes("female"))) {
+          option.selected = true;
+        }
+        voiceSelect.appendChild(option);
+      });
+    }
+
+    speechSynthesis.onvoiceschanged = populateVoices;
+
+    function speak() {
+      const text = document.getElementById("textInput").value;
+      const selectedVoice = voices[voiceSelect.value];
+
+      if (text.trim() === "") {
+        alert("Kuch toh likho baby!");
+        return;
+      }
+
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.voice = selectedVoice;
+      utterance.rate = 1;
+      speechSynthesis.speak(utterance);
+    }
+
+    function downloadMP3() {
+      const text = document.getElementById("textInput").value;
+
+      if (text.trim() === "") {
+        alert("Kuch toh likho baby!");
+        return;
+      }
+
+      const apiKey = "745d8be904a24a4e9a8206a593d29fb2";
+      const url = `https://api.voicerss.org/?key=${apiKey}&hl=en-us&src=${encodeURIComponent(text)}&r=0&c=mp3`;
+      
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = "voice_output.mp3";
+      a.click();
+    }
+  </script>
+</body>
+</html>

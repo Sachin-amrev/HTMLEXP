@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tum Galat Ho App</title>
+  <style>
+    body {
+      background-color: #222;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 50px;
+    }
+    input, textarea, button {
+      margin: 10px;
+      padding: 10px;
+      font-size: 16px;
+      width: 80%;
+      max-width: 400px;
+      border-radius: 8px;
+      border: none;
+    }
+    button {
+      background-color: #ff4081;
+      color: white;
+      cursor: pointer;
+    }
+    #result {
+      margin-top: 20px;
+      font-size: 24px;
+      font-weight: bold;
+      color: #ff5757;
+    }
+  </style>
+</head>
+<body>
+  <h1>Apna Naam Aur Baat Likho</h1>
+  <input type="text" id="name" placeholder="Apna Naam yahan likho">
+  <br>
+  <textarea id="message" rows="4" placeholder="Apni baat yahan likho..."></textarea>
+  <br>
+  <button onclick="checkMessage()">Check</button>
+
+  <div id="result"></div>
+
+  <script>
+    function checkMessage() {
+      const name = document.getElementById("name").value;
+      const resultDiv = document.getElementById("result");
+
+      if (name.trim() !== "") {
+        resultDiv.innerText = `Tum galat ho ${name}!`;
+      } else {
+        resultDiv.innerText = "Pehle apna naam toh likho Babu!";
+      }
+    }
+  </script>
+</body>
+</html>

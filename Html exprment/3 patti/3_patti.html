@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teen Patti AI Battle</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #2E8B57;
+            color: white;
+        }
+        .game-container {
+            margin-top: 20px;
+        }
+        .cards {
+            display: flex;
+            justify-content: center;
+            margin: 10px;
+        }
+        .card {
+            width: 60px;
+            height: 90px;
+            background: white;
+            color: black;
+            margin: 5px;
+            padding: 10px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .btn {
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            background: gold;
+            color: black;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Teen Patti AI Battle</h1>
+    
+    <div class="game-container">
+        <h2>Player Hand</h2>
+        <div id="player-hand" class="cards"></div>
+        <h3>Player Coins: <span id="player-coins">1000</span></h3>
+        <button class="btn" onclick="placeBet()">100₹ Bet</button>
+
+        <h2>AI 1 Hand</h2>
+        <div id="ai1-hand" class="cards"></div>
+        <h3>AI 1 Coins: <span id="ai1-coins">1000</span></h3>
+
+        <h2>AI 2 Hand</h2>
+        <div id="ai2-hand" class="cards"></div>
+        <h3>AI 2 Coins: <span id="ai2-coins">1000</span></h3>
+
+        <h3>Pot: <span id="pot">0</span></h3>
+        <button id="start-btn" class="btn" onclick="startGame()" disabled>Start Game</button>
+
+        <h3 id="result"></h3>
+    </div>
+
+    <script>
+        let playerCoins = 1000, ai1Coins = 1000, ai2Coins = 1000, pot = 0;
+        let playerHasBet = false;
+
+        const suits = ['♠️', '♥️', '♦️', '♣️'];
+        const ranks = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
+
+        function generateDeck() {
+            let deck = [];
+            for (let suit of suits) {
+                for (let rank of ranks) {
+                    deck.push({ rank, suit });
+                }
+            }
+            return deck.sort(() => Math.random() - 0.5);
+        }
+
+        function dealCards(deck) {
+            return {
+                player: [deck.pop(), deck.pop(), deck.pop()],
+                ai1: [deck.pop(), deck.pop(), deck.pop()],
+                ai2: [deck.pop(), deck.pop(), deck.pop()]
+            };
+        }
+
+        function evaluateHand(hand) {
+            let ranks = hand.map(card => card.rank);
+            if (ranks[0] === ranks[1] && ranks[1] === ranks[2]) return "Trail (Three of a Kind)";
+            let isSameSuit = hand.every(card => card.suit === hand[0].suit);
+            let sortedRanks = ranks.map(r => ranks.indexOf(r)).sort((a, b) => a - b);
+            let isSequence = sortedRanks[1] - sortedRanks[0] === 1 && sortedRanks[2] - sortedRanks[1] === 1;
+            if (isSameSuit && isSequence) return "Pure Sequence (Straight Flush)";
+            if (isSequence) return "Sequence (Straight)";
+            if (isSameSuit) return "Color (Flush)";
+            if (new Set(ranks).size === 2) return "Pair";
+            return "High Card";
+        }
+
+        function placeBet() {
+            if (playerCoins >= 100) {
+                playerCoins -= 100;
+                pot += 100;
+                ai1Coins = aiDecision(ai1Coins);
+                ai2Coins = aiDecision(ai2Coins);
+                playerHasBet = true;
+                document.getElementById("start-btn").disabled = false;
+            } else {
+                alert("Not enough coins to bet!");
+            }
+            updateCoins();
+        }
+
+        function aiDecision(aiCoins) {
+            if (aiCoins >= 100) {
+                aiCoins -= 100;
+                pot += 100;
+            }
+            return aiCoins;
+        }
+
+        function displayHand(playerId, hand) {
+            let container = document.getElementById(playerId);
+            container.innerHTML = "";
+            hand.forEach(card => {
+                let cardDiv = document.createElement("div");
+                cardDiv.className = "card";
+                cardDiv.textContent = `${card.rank}${card.suit}`;
+                container.appendChild(cardDiv);
+            });
+        }
+
+        function updateCoins() {
+            document.getElementById("player-coins").textContent = playerCoins;
+            document.getElementById("ai1-coins").textContent = ai1Coins;
+            document.getElementById("ai2-coins").textContent = ai2Coins;
+            document.getElementById("pot").textContent = pot;
+        }
+
+        function startGame() {
+            if (!playerHasBet) {
+                alert("You must place a bet before starting!");
+                return;
+            }
+
+            let deck = generateDeck();
+            let hands = dealCards(deck);
+
+            displayHand("player-hand", hands.player);
+            displayHand("ai1-hand", hands.ai1);
+            displayHand("ai2-hand", hands.ai2);
+
+            let playerRank = evaluateHand(hands.player);
+            let ai1Rank = evaluateHand(hands.ai1);
+            let ai2Rank = evaluateHand(hands.ai2);
+
+            let winner = determineWinner(playerRank, ai1Rank, ai2Rank);
+            document.getElementById("result").innerHTML = `<b>Winner:</b> ${winner}`;
+            distributeWinnings(winner);
+            updateCoins();
+
+            playerHasBet = false;  
+            document.getElementById("start-btn").disabled = true;  
+        }
+
+        function determineWinner(playerRank, ai1Rank, ai2Rank) {
+            let ranks = { "Trail (Three of a Kind)": 5, "Pure Sequence (Straight Flush)": 4, "Sequence (Straight)": 3, "Color (Flush)": 2, "Pair": 1, "High Card": 0 };
+            let scores = { "Player": ranks[playerRank], "AI 1": ranks[ai1Rank], "AI 2": ranks[ai2Rank] };
+            return Object.keys(scores).reduce((a, b) => (scores[a] > scores[b] ? a : b));
+        }
+
+        function distributeWinnings(winner) {
+            if (winner === "Player") playerCoins += pot;
+            else if (winner === "AI 1") ai1Coins += pot;
+            else if (winner === "AI 2") ai2Coins += pot;
+            pot = 0;
+        }
+    </script>
+
+</body>
+</html>

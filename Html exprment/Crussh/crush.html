@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Crush Detector</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #222;
+            color: white;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .input-box {
+            margin-bottom: 20px;
+        }
+        input {
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #ff0080;
+            color: white;
+        }
+        button:hover {
+            background-color: #e60073;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            color: yellow;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>AI Crush Detector ❤️</h1>
+        <p>Enter your name and your crush's name to check compatibility!</p>
+        
+        <div class="input-box">
+            <input type="text" id="yourName" placeholder="Your Name">
+        </div>
+        <div class="input-box">
+            <input type="text" id="crushName" placeholder="Crush's Name">
+        </div>
+        <button onclick="checkCrush()">Check ❤️</button>
+
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        function checkCrush() {
+            let yourName = document.getElementById("yourName").value.trim();
+            let crushName = document.getElementById("crushName").value.trim();
+            
+            if (yourName === "" || crushName === "") {
+                document.getElementById("result").innerHTML = "Please enter both names!";
+                return;
+            }
+
+            let compatibility = Math.floor(Math.random() * 100) + 1;
+            document.getElementById("result").innerHTML = "❤️ " + yourName + " & " + crushName + " have " + compatibility + "% compatibility! ❤️";
+        }
+    </script>
+
+</body>
+</html>

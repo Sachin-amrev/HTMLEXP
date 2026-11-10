@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I Love You Baby 🐥</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: pink;
+            font-family: Arial, sans-serif;
+            flex-direction: column;
+        }
+        .heart-container {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            cursor: pointer;
+        }
+        .heart {
+            width: 100px;
+            height: 100px;
+            background-color: red;
+            position: absolute;
+            transform: rotate(-45deg);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            transition: 0.5s;
+        }
+        .heart::before, .heart::after {
+            content: "";
+            width: 100px;
+            height: 100px;
+            background-color: red;
+            border-radius: 50%;
+            position: absolute;
+        }
+        .heart::before {
+            top: -50px;
+            left: 0;
+        }
+        .heart::after {
+            left: 50px;
+            top: 0;
+        }
+        .message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 20px;
+            color: white;
+            text-align: center;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="heart-container" onclick="showMessage()">
+        <div class="heart"></div>
+        <div class="message" id="message">❤️ Click me! ❤️</div>
+    </div>
+
+    <h2 id="loveText"></h2>
+
+    <script>
+        let clickCount = 0;
+
+        function showMessage() {
+            let loveText = document.getElementById("loveText");
+            if (clickCount === 0) {
+                loveText.innerHTML = "I Love You Vijay 🐥🥰 Baby 🐥";
+            } else if (clickCount === 1) {
+                loveText.innerHTML = "I Love You So Much Baby ❤️😍";
+            }
+            clickCount++;
+        }
+    </script>
+
+</body>
+</html>

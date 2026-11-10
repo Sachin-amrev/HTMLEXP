@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Weather App</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #0d1b2a; /* Dark blue background */
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      animation: fadeIn 2s ease-in;
+    }
+
+    .weather-container {
+      background: #1b263b;
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+      text-align: center;
+      animation: slideUp 1s ease-out;
+      transition: transform 0.3s ease;
+    }
+
+    .weather-container:hover {
+      transform: scale(1.02);
+    }
+
+    input[type="text"] {
+      padding: 0.7rem;
+      width: 220px;
+      font-size: 1rem;
+      margin-right: 10px;
+      border-radius: 5px;
+      border: none;
+      outline: none;
+      transition: box-shadow 0.3s ease;
+    }
+
+    input[type="text"]:focus {
+      box-shadow: 0 0 5px #00bcd4;
+    }
+
+    button {
+      padding: 0.7rem 1.2rem;
+      font-size: 1rem;
+      background-color: #00bcd4;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #0097a7;
+    }
+
+    .result {
+      margin-top: 1.5rem;
+      font-size: 1.3rem;
+      opacity: 0;
+      animation: fadeIn 1s ease forwards;
+      animation-delay: 0.5s;
+    }
+
+    @keyframes fadeIn {
+      0% { opacity: 0; transform: translateY(10px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes slideUp {
+      0% { transform: translateY(30px); opacity: 0; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="weather-container">
+    <h1>🌦 Weather App</h1>
+    <input type="text" id="locationInput" placeholder="Enter city name" />
+    <button onclick="getWeather()">Get Weather</button>
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    async function getWeather() {
+      const location = document.getElementById('locationInput').value.trim();
+      const resultDiv = document.getElementById('result');
+      const apiKey = '788adcdb14bd4314947162640250305';
+
+      resultDiv.style.opacity = 0;
+
+      if (!location) {
+        resultDiv.textContent = 'Please enter a location.';
+        resultDiv.style.opacity = 1;
+        return;
+      }
+
+      try {
+        const response = await fetch(
+          `http://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${location}&aqi=yes`
+        );
+
+        if (!response.ok) {
+          resultDiv.textContent = 'Location not found. Please try again.';
+          resultDiv.style.opacity = 1;
+          return;
+        }
+
+        const data = await response.json();
+        const temp = data.current.temp_c;
+        const condition = data.current.condition.text;
+        resultDiv.innerHTML = `
+          <p>🌍 <strong>${location}</strong></p>
+          <p>🌡 Temperature: <strong>${temp}°C</strong></p>
+          <p>☁️ Condition: <strong>${condition}</strong></p>
+        `;
+        resultDiv.style.opacity = 1;
+      } catch (error) {
+        resultDiv.textContent = 'Error fetching weather data.';
+        resultDiv.style.opacity = 1;
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #222;
+    color: white;
+}
+
+.container {
+    margin-top: 50px;
+}
+
+.wheel-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.wheel {
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.pointer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -100%);
+    width: 20px;
+    height: 40px;
+    background-color: red;
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+}
+
+button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 18px;
+    border: none;
+    cursor: pointer;
+    background: gold;
+    color: black;
+    border-radius: 5px;
+}
+
+button:hover {
+    background: orange;
+}
+
+#result {
+    margin-top: 20px;
+    font-size: 24px;
+}

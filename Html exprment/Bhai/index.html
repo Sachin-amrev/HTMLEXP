@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surprise for Rinku Bhai ❤️</title>
+    <style>
+        body {
+            text-align: center;
+            background-color: #ffccff;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+        .gift-box {
+            width: 120px;
+            height: 120px;
+            background-color: red;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            color: white;
+            cursor: pointer;
+        }
+        .heart {
+            display: none;
+            font-size: 70px;
+            color: red;
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+        .message {
+            display: none;
+            font-size: 35px;
+            color: white;
+            background-color: red;
+            padding: 10px 20px;
+            border-radius: 10px;
+        }
+        .balloon {
+            position: absolute;
+            width: 40px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: red;
+            display: none;
+            animation: floatUp 5s linear infinite;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(-500px); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="gift-box" onclick="openGift()">🎁 Open</div>
+    <div class="heart" onclick="showBalloons()">❤️</div>
+    <div class="message">I Love You Rinku Bhai ❤️</div>
+
+    <script>
+        function openGift() {
+            document.querySelector(".gift-box").style.display = "none";
+            document.querySelector(".heart").style.display = "block";
+            document.querySelector(".message").style.display = "block";
+        }
+
+        function showBalloons() {
+            let colors = ["red", "blue", "green", "yellow", "purple", "pink"];
+            for (let i = 0; i < 10; i++) {
+                let balloon = document.createElement("div");
+                balloon.classList.add("balloon");
+                balloon.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                balloon.style.left = Math.random() * window.innerWidth + "px";
+                balloon.style.bottom = "-60px";
+                document.body.appendChild(balloon);
+                balloon.style.display = "block";
+                setTimeout(() => balloon.remove(), 5000);
+            }
+        }
+    </script>
+
+</body>
+</html>

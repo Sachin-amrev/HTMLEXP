@@ -1,0 +1,158 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WhatsApp Clone - Dark Mode</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #121212;
+      color: white;
+    }
+    .container {
+      display: flex;
+      height: 100vh;
+    }
+    .sidebar {
+      width: 30%;
+      background-color: #1e1e1e;
+      border-right: 1px solid #333;
+      padding: 10px;
+    }
+    .contact {
+      padding: 10px;
+      cursor: pointer;
+      border-bottom: 1px solid #333;
+    }
+    .contact:hover {
+      background-color: #333;
+    }
+    .chat {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .messages {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+    }
+    .message {
+      margin-bottom: 10px;
+      padding: 10px;
+      border-radius: 10px;
+      max-width: 70%;
+    }
+    .sent {
+      background-color: #0b93f6;
+      color: white;
+      align-self: flex-end;
+    }
+    .received {
+      background-color: #3a3a3a;
+      color: white;
+      align-self: flex-start;
+    }
+    .input-area {
+      display: flex;
+      padding: 10px;
+      background-color: #1e1e1e;
+      border-top: 1px solid #333;
+    }
+    .input-area input {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      border-radius: 20px;
+      outline: none;
+      margin-right: 10px;
+    }
+    .input-area button {
+      padding: 10px 15px;
+      border: none;
+      background-color: #0b93f6;
+      color: white;
+      border-radius: 20px;
+      cursor: pointer;
+    }
+    .add-contact {
+      padding: 10px;
+      background-color: #333;
+      text-align: center;
+      margin-bottom: 10px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="sidebar">
+      <div class="add-contact" onclick="addContact()">+ Add Contact</div>
+      <div id="contacts"></div>
+    </div>
+    <div class="chat">
+      <div class="messages" id="chatBox"></div>
+      <div class="input-area">
+        <input type="text" id="messageInput" placeholder="Type a message...">
+        <button onclick="sendMessage()">Send</button>
+      </div>
+    </div>
+  </div>  <script>
+    let contacts = JSON.parse(localStorage.getItem('contacts')) || ['Friend'];
+    let selectedContact = contacts[0];
+
+    function renderContacts() {
+      const contactsDiv = document.getElementById('contacts');
+      contactsDiv.innerHTML = '';
+      contacts.forEach(contact => {
+        const div = document.createElement('div');
+        div.className = 'contact';
+        div.textContent = contact;
+        div.onclick = () => {
+          selectedContact = contact;
+          renderMessages();
+        };
+        contactsDiv.appendChild(div);
+      });
+    }
+
+    function addContact() {
+      const name = prompt('Enter contact name:');
+      if (name && !contacts.includes(name)) {
+        contacts.push(name);
+        localStorage.setItem('contacts', JSON.stringify(contacts));
+        renderContacts();
+      }
+    }
+
+    function renderMessages() {
+      const chatBox = document.getElementById('chatBox');
+      chatBox.innerHTML = '';
+      const messages = JSON.parse(localStorage.getItem(selectedContact)) || [];
+      messages.forEach(msg => {
+        const div = document.createElement('div');
+        div.className = `message ${msg.type}`;
+        div.textContent = msg.text;
+        chatBox.appendChild(div);
+      });
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function sendMessage() {
+      const input = document.getElementById('messageInput');
+      const text = input.value.trim();
+      if (text) {
+        const messages = JSON.parse(localStorage.getItem(selectedContact)) || [];
+        messages.push({ text, type: 'sent' });
+        localStorage.setItem(selectedContact, JSON.stringify(messages));
+        input.value = '';
+        renderMessages();
+      }
+    }
+
+    renderContacts();
+    renderMessages();
+  </script></body>
+</html>

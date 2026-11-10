@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Crush Detector ❤️</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #ffdde1;
+            padding: 50px;
+            overflow: hidden;
+        }
+        h1 {
+            color: #d63384;
+        }
+        input {
+            padding: 10px;
+            font-size: 16px;
+            width: 250px;
+            margin: 10px;
+            border: 2px solid #d63384;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 18px;
+            background: #ff4d6d;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background: #d63384;
+        }
+        #result {
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        .heart {
+            position: absolute;
+            color: red;
+            font-size: 25px;
+            animation: fall 10s linear forwards;
+        }
+        @keyframes fall {
+            0% { transform: translateY(-100px) translateX(0px); opacity: 1; }
+            100% { transform: translateY(100vh) translateX(30px); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>💖 AI Crush Detector 💖</h1>
+    <p>Apna aur apne crush ka naam likho, aur dekho kitna match hai! 😍</p>
+
+    <input type="text" id="yourName" placeholder="Aapka Naam">
+    <br>
+    <input type="text" id="crushName" placeholder="Crush Ka Naam">
+    <br>
+    <button onclick="detectCrush()">Find Love % ❤️</button>
+
+    <p id="result"></p>
+
+    <script>
+        function detectCrush() {
+            var yourName = document.getElementById("yourName").value.trim();
+            var crushName = document.getElementById("crushName").value.trim();
+            var result = document.getElementById("result");
+
+            if (yourName === "" || crushName === "") {
+                result.innerHTML = "❌ Please enter both names!";
+                return;
+            }
+
+            // Generate random love percentage
+            var lovePercentage = Math.floor(Math.random() * 101);
+            var message = "";
+
+            if (lovePercentage > 80) {
+                message = "💖 Perfect Match! " + lovePercentage + "% Love! Destiny hai! 😍";
+            } else if (lovePercentage > 50) {
+                message = "🔥 Kaafi accha match! " + lovePercentage + "% Love! Try kar sakte ho! 😉";
+            } else {
+                message = "💔 Thoda tough hai... " + lovePercentage + "% Love! Lekin koshish jaari rakho! 😅";
+            }
+
+            result.innerHTML = message;
+
+            // Agar match % 70+ hai to heart rain start ho
+            if (lovePercentage >= 70) {
+                startHeartRain();
+            }
+        }
+
+        function startHeartRain() {
+            let heartContainer = document.createElement("div");
+            heartContainer.classList.add("heart-container");
+            document.body.appendChild(heartContainer);
+
+            for (let i = 0; i < 30; i++) {
+                let heart = document.createElement("div");
+                heart.innerHTML = "❤️";
+                heart.classList.add("heart");
+                heart.style.left = Math.random() * 100 + "vw";
+                heart.style.animationDuration = Math.random() * 3 + 7 + "s";
+                heartContainer.appendChild(heart);
+            }
+
+            // 10 second baad hearts remove ho jayenge
+            setTimeout(() => {
+                heartContainer.remove();
+            }, 10000);
+        }
+    </script>
+
+</body>
+</html>

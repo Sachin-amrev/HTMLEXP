@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hacking Screen</title>
+    <style>
+        body {
+            background-color: black;
+            color: green;
+            font-family: 'Courier New', monospace;
+            text-align: center;
+            padding: 20px;
+            overflow: hidden;
+        }
+        .terminal {
+            font-size: 20px;
+            white-space: pre-line;
+            overflow: hidden;
+            height: 400px;
+        }
+        .blink {
+            animation: blink 0.8s infinite alternate;
+        }
+        @keyframes blink {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <h1>Initializing Hack...</h1>
+    <div class="terminal" id="terminal"></div>
+    <p class="blink">█</p>
+    <script>
+        const terminal = document.getElementById("terminal");
+        const commands = [
+            "[Accessing system files...]",
+            "[Decrypting passwords...]",
+            "[Fetching user data...]",
+            "[Injecting malicious scripts...]",
+            "[Connection to mainframe established]",
+            "[Sending virus payload...]",
+            "[Self-destruct sequence activated!]",
+            "[Reverting changes... Hack failed!]"
+        ];
+
+        let i = 0;
+        function typeEffect() {
+            if (i < commands.length) {
+                terminal.innerHTML += commands[i] + "\n";
+                i++;
+                setTimeout(typeEffect, 1000);
+            }
+        }
+        typeEffect();
+    </script>
+</body>
+</html>

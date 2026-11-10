@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ceiling Fan with Flying Hearts</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f8ff;
+            margin: 0;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .fan-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+        }
+        .fan {
+            width: 100%;
+            height: 100%;
+            background: url('https://i.ibb.co/BVJDyQ95/depositphotos-11786775-stock-photo-electric-fan.webp') no-repeat center;
+            background-size: contain;
+            animation: spin 0.5s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .controls {
+            margin-top: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .start { background-color: green; color: white; }
+        .stop { background-color: red; color: white; }
+        
+        .heart {
+            position: absolute;
+            font-size: 24px;
+            color: red;
+            animation: fly 3s linear infinite;
+        }
+        
+        @keyframes fly {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: translate(calc(-50vw + 100px), calc(-50vh + 100px)) scale(1.5);
+                opacity: 0.8;
+            }
+            100% {
+                transform: translate(calc(50vw - 100px), calc(50vh - 100px)) scale(2);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🌀 Ceiling Fan with Flying Hearts ❤️</h1>
+    
+    <div class="fan-container">
+        <div class="fan" id="fan"></div>
+    </div>
+
+    <div class="controls">
+        <button class="start" onclick="startFan()">Start Fan</button>
+        <button class="stop" onclick="stopFan()">Stop Fan</button>
+    </div>
+
+    <script>
+        function startFan() {
+            document.getElementById("fan").style.animation = "spin 0.2s linear infinite";
+            createHearts();
+        }
+
+        function stopFan() {
+            document.getElementById("fan").style.animation = "none";
+            document.querySelectorAll(".heart").forEach(heart => heart.remove());
+        }
+
+        function createHearts() {
+            setInterval(() => {
+                let heart = document.createElement("div");
+                heart.innerHTML = "❤️";
+                heart.classList.add("heart");
+                let fan = document.getElementById("fan");
+                let rect = fan.getBoundingClientRect();
+                heart.style.left = `${rect.left + rect.width / 2}px`;
+                heart.style.top = `${rect.top + rect.height / 2}px`;
+                document.body.appendChild(heart);
+                setTimeout(() => { heart.remove(); }, 3000);
+            }, 300);
+        }
+    </script>
+
+</body>
+</html>

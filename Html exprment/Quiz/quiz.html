@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SSC Quiz - Dark Theme</title>
+  <style>
+    body {
+      background-color: #121212;
+      color: white;
+      font-family: 'Segoe UI', sans-serif;
+      padding: 20px;
+    }
+    .hidden {
+      display: none;
+    }
+    .question-box {
+      margin: 30px auto;
+      max-width: 600px;
+      padding: 20px;
+      border: 1px solid #333;
+      border-radius: 10px;
+      background-color: #1e1e1e;
+    }
+    button {
+      background-color: #1e88e5;
+      border: none;
+      padding: 10px 20px;
+      margin-top: 20px;
+      font-size: 16px;
+      border-radius: 5px;
+      color: white;
+      cursor: pointer;
+    }
+    h1, h2 {
+      text-align: center;
+    }
+    .feedback {
+      color: #f44336;
+      font-weight: bold;
+    }
+    .correct {
+      color: #4caf50;
+    }
+    .answer-box {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>SSC Quiz - Dark Mode</h1>
+  <div class="question-box" id="quizBox">
+    <div id="questionText"></div>
+    <div id="options"></div>
+    <button id="submitBtn" onclick="submitAnswer()">Submit</button>
+    <div id="feedback" class="hidden"></div>
+  </div>
+
+  <div id="result" class="hidden"></div>
+
+  <script>
+    const questions = [
+      {
+        q: "1. Analogy: Book : Reading :: Fork : ?",
+        options: ["Eat", "Writing", "Stirring", "Drawing"],
+        answer: "Eat"
+      },
+      {
+        q: "2. Series: 2, 4, 8, 16, ?",
+        options: ["32", "24", "20", "18"],
+        answer: "32"
+      },
+      {
+        q: "3. 20% of 150 is:",
+        options: ["30", "25", "20", "35"],
+        answer: "30"
+      },
+      {
+        q: "4. Profit of ₹25 on ₹100 is:",
+        options: ["25%", "20%", "15%", "10%"],
+        answer: "25%"
+      },
+      {
+        q: "5. Synonym of “Beautiful”:",
+        options: ["Pretty", "Ugly", "Bad", "Rough"],
+        answer: "Pretty"
+      },
+      {
+        q: "6. He *is playing* cricket. (Choose correct form)",
+        options: ["Present Continuous", "Past Tense", "Present Perfect", "Future Tense"],
+        answer: "Present Continuous"
+      },
+      {
+        q: "7. Who was the first President of India?",
+        options: ["Dr. Rajendra Prasad", "Jawaharlal Nehru", "APJ Abdul Kalam", "Mahatma Gandhi"],
+        answer: "Dr. Rajendra Prasad"
+      },
+      {
+        q: "8. Constitution of India was adopted in:",
+        options: ["1949", "1950", "1947", "1952"],
+        answer: "1949"
+      }
+    ];
+
+    let current = 0;
+    let score = 0;
+    let selectedAnswer = "";
+
+    function loadQuestion() {
+      const q = questions[current];
+      document.getElementById("questionText").innerHTML = `<h2>${q.q}</h2>`;
+      const opts = q.options.map(opt => 
+        `<label><input type="radio" name="option" value="${opt}"> ${opt}</label><br>`
+      ).join("");
+      document.getElementById("options").innerHTML = opts;
+      document.getElementById("feedback").classList.add("hidden");
+    }
+
+    function submitAnswer() {
+      const selected = document.querySelector('input[name="option"]:checked');
+      if (!selected) {
+        alert("Please select an answer!");
+        return;
+      }
+
+      const correctAnswer = questions[current].answer;
+      const feedbackElement = document.getElementById("feedback");
+
+      if (selected.value === correctAnswer) {
+        score++;
+        feedbackElement.innerHTML = `<span class="correct">Correct!</span><br>Correct answer: ${correctAnswer}`;
+      } else {
+        feedbackElement.innerHTML = `<span class="feedback">Incorrect! Correct answer: ${correctAnswer}</span>`;
+      }
+
+      feedbackElement.classList.remove("hidden");
+
+      current++;
+      if (current < questions.length) {
+        setTimeout(() => {
+          loadQuestion();
+          document.getElementById("feedback").classList.add("hidden");
+        }, 1500); // 1.5 seconds delay before next question
+      } else {
+        setTimeout(() => {
+          document.getElementById("quizBox").classList.add("hidden");
+          document.getElementById("result").innerHTML = `<h2>Your Score: ${score} / ${questions.length}</h2>`;
+          document.getElementById("result").classList.remove("hidden");
+        }, 1500);
+      }
+    }
+
+    loadQuestion(); // start first question
+  </script>
+</body>
+</html>

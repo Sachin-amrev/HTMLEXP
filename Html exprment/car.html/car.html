@@ -1,0 +1,62 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Racing Game</title>
+    <style>
+        body { margin: 0; overflow: hidden; }
+        canvas { display: block; }
+    </style>
+</head>
+<body>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // Scene Setup
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        // Road
+        const roadGeometry = new THREE.PlaneGeometry(10, 200);
+        const roadMaterial = new THREE.MeshBasicMaterial({ color: 0x444444, side: THREE.DoubleSide });
+        const road = new THREE.Mesh(roadGeometry, roadMaterial);
+        road.rotation.x = -Math.PI / 2;
+        scene.add(road);
+
+        // Car
+        const carGeometry = new THREE.BoxGeometry(1, 0.5, 2);
+        const carMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+        const car = new THREE.Mesh(carGeometry, carMaterial);
+        car.position.y = 0.5;
+        scene.add(car);
+
+        // Camera Position
+        camera.position.set(0, 2, 5);
+        camera.lookAt(car.position);
+
+        // Car Movement
+        document.addEventListener("keydown", (event) => {
+            if (event.key === "ArrowLeft") car.position.x -= 0.2;
+            if (event.key === "ArrowRight") car.position.x += 0.2;
+            if (event.key === "ArrowUp") car.position.z -= 0.2;
+            if (event.key === "ArrowDown") car.position.z += 0.2;
+        });
+
+        // Animation Loop
+        function animate() {
+            requestAnimationFrame(animate);
+            road.position.z += 0.1;
+            if (road.position.z > 100) road.position.z = 0;
+            renderer.render(scene, camera);
+        }
+        animate();
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Casino Slot Machine</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #2c3e50;
+      color: white;
+    }
+
+    .container {
+      text-align: center;
+      background-color: #34495e;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+      width: 90%;
+      max-width: 400px;
+      position: relative;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      font-size: 24px;
+    }
+
+    .slots {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .slot {
+      width: 80px;
+      height: 80px;
+      background-color: #e74c3c;
+      border: 2px solid #c0392b;
+      border-radius: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .spin-section {
+      margin-bottom: 20px;
+    }
+
+    .spin-section input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .spin-btn {
+      padding: 10px 20px;
+      font-size: 18px;
+      background-color: #27ae60;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      width: 100%;
+    }
+
+    .spin-btn:hover {
+      background-color: #2ecc71;
+    }
+
+    #result {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .balance-section {
+      margin-top: 20px;
+      text-align: left;
+    }
+
+    .balance-section div {
+      margin-bottom: 10px;
+      font-size: 16px;
+    }
+
+    .recharge-section {
+      margin-top: 20px;
+      text-align: left;
+    }
+
+    .recharge-section input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .recharge-section button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      font-size: 16px;
+      background-color: #27ae60;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .recharge-section button:hover {
+      background-color: #2ecc71;
+    }
+
+    #recharge-message {
+      margin-top: 10px;
+      font-size: 14px;
+      color: #d32f2f;
+    }
+
+    .deposit-btn {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      font-size: 16px;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .deposit-btn:hover {
+      background-color: #2980b9;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Game Section -->
+    <h1>Casino Slot Machine</h1>
+    <div class="slots">
+      <div class="slot" id="slot1">🍒</div>
+      <div class="slot" id="slot2">🍋</div>
+      <div class="slot" id="slot3">🍊</div>
+    </div>
+    <div class="spin-section">
+      <input type="number" id="spin-amount" placeholder="Enter spin amount (₹100 - ₹100000)" min="100" max="100000">
+      <button class="spin-btn" onclick="spinSlots()">Spin</button>
+    </div>
+    <div id="result"></div>
+
+    <!-- Balance Section -->
+    <div class="balance-section">
+      <div>Total Balance: ₹<span id="total-balance">1000</span></div>
+      <div>Winning Amount: ₹<span id="winning-amount">0</span></div>
+    </div>
+
+    <!-- Recharge Section -->
+    <div class="recharge-section">
+      <h2>Recharge Wallet</h2>
+      <input type="number" id="recharge-amount" placeholder="Enter recharge amount">
+      <button onclick="rechargeWallet()">Recharge</button>
+      <button class="deposit-btn" onclick="depositAmount()">Deposit</button>
+      <p id="recharge-message"></p>
+    </div>
+  </div>
+
+  <script>
+    const symbols = ["🍒", "🍋", "🍊", "🍇", "🍉", "🍎"];
+    let totalBalance = 1000;
+    let winningAmount = 0;
+
+    const slot1 = document.getElementById("slot1");
+    const slot2 = document.getElementById("slot2");
+    const slot3 = document.getElementById("slot3");
+    const result = document.getElementById("result");
+    const totalBalanceDisplay = document.getElementById("total-balance");
+    const winningAmountDisplay = document.getElementById("winning-amount");
+    const spinAmountInput = document.getElementById("spin-amount");
+    const rechargeAmountInput = document.getElementById("recharge-amount");
+    const rechargeMessage = document.getElementById("recharge-message");
+
+    function spinSlots() {
+      const spinAmount = parseInt(spinAmountInput.value);
+
+      // Validate spin amount
+      if (isNaN(spinAmount) || spinAmount < 100 || spinAmount > 100000) {
+        result.innerText = "Please enter a valid spin amount (₹100 - ₹100000).";
+        return;
+      }
+
+      // Check balance
+      if (totalBalance < spinAmount) {
+        result.innerText = "Insufficient balance! Recharge to play.";
+        return;
+      }
+
+      // Deduct spin amount
+      totalBalance -= spinAmount;
+      updateBalances();
+
+      // Randomize symbols
+      const random1 = symbols[Math.floor(Math.random() * symbols.length)];
+      const random2 = symbols[Math.floor(Math.random() * symbols.length)];
+      const random3 = symbols[Math.floor(Math.random() * symbols.length)];
+
+      slot1.innerText = random1;
+      slot2.innerText = random2;
+      slot3.innerText = random3;
+
+      // Check for win
+      if (random1 === random2 && random2 === random3) {
+        const winAmount = spinAmount * 2; // Winning amount is double of spin amount
+        winningAmount += winAmount;
+        totalBalance += winAmount;
+        result.innerText = `Congratulations! You won ₹${winAmount}`;
+      } else {
+        result.innerText = "Try again!";
+      }
+
+      updateBalances();
+    }
+
+    function rechargeWallet() {
+      const amount = parseInt(rechargeAmountInput.value);
+
+      if (isNaN(amount) || amount <= 0) {
+        rechargeMessage.innerText = "Please enter a valid amount.";
+        return;
+      }
+
+      totalBalance += amount;
+      updateBalances();
+      rechargeMessage.innerText = `₹${amount} recharged successfully!`;
+      rechargeAmountInput.value = "";
+    }
+
+    function depositAmount() {
+      const amount = parseInt(rechargeAmountInput.value);
+
+      if (isNaN(amount) || amount <= 0) {
+        rechargeMessage.innerText = "Please enter a valid amount.";
+        return;
+      }
+
+      totalBalance += amount;
+      updateBalances();
+      rechargeMessage.innerText = `₹${amount} deposited successfully!`;
+      rechargeAmountInput.value = "";
+    }
+
+    function updateBalances() {
+      totalBalanceDisplay.innerText = totalBalance;
+      winningAmountDisplay.innerText = winningAmount;
+    }
+  </script>
+</body>
+</html>

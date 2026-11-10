@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Racing Game</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            background-color: black;
+            color: white;
+        }
+        #gameArea {
+            position: relative;
+            width: 400px;
+            height: 600px;
+            background-color: gray;
+            margin: auto;
+            overflow: hidden;
+            border: 3px solid white;
+        }
+        .car {
+            position: absolute;
+            width: 50px;
+            height: 100px;
+            background-color: red;
+            bottom: 10px;
+            left: 175px;
+        }
+        .enemyCar {
+            position: absolute;
+            width: 50px;
+            height: 100px;
+            background-color: blue;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🚗 Car Racing Game 🚗</h1>
+    <p>Use Left & Right Arrow Keys to Move</p>
+    <div id="gameArea">
+        <div class="car" id="playerCar"></div>
+    </div>
+
+    <script>
+        let playerCar = document.getElementById("playerCar");
+        let gameArea = document.getElementById("gameArea");
+        let carX = 175;
+        let speed = 5;
+        let enemyCars = [];
+
+        document.addEventListener("keydown", function(event) {
+            if (event.key === "ArrowLeft" && carX > 0) {
+                carX -= speed;
+            } else if (event.key === "ArrowRight" && carX < 350) {
+                carX += speed;
+            }
+            playerCar.style.left = carX + "px";
+        });
+
+        function createEnemyCar() {
+            let enemyCar = document.createElement("div");
+            enemyCar.classList.add("enemyCar");
+            enemyCar.style.left = Math.floor(Math.random() * 350) + "px";
+            enemyCar.style.top = "-100px";
+            gameArea.appendChild(enemyCar);
+            enemyCars.push(enemyCar);
+        }
+
+        function moveEnemyCars() {
+            enemyCars.forEach((car, index) => {
+                let carY = parseInt(car.style.top);
+                car.style.top = carY + 5 + "px";
+
+                if (carY > 600) {
+                    gameArea.removeChild(car);
+                    enemyCars.splice(index, 1);
+                }
+
+                if (carY > 500 && carX < parseInt(car.style.left) + 50 && carX + 50 > parseInt(car.style.left)) {
+                    alert("💥 Crash! Game Over!");
+                    location.reload();
+                }
+            });
+        }
+
+        setInterval(createEnemyCar, 2000);
+        setInterval(moveEnemyCars, 50);
+    </script>
+
+</body>
+</html>

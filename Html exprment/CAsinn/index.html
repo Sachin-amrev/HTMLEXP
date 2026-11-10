@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spin Wheel Casino</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            background-color: #007BFF; /* Blue Background */
+            color: white;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .wheel-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+        }
+        .wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            position: absolute;
+            transition: transform 4s ease-out;
+            border: 8px solid white; /* White Border */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: red; /* Red Wheel */
+        }
+        .pointer {
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-bottom: 40px solid black;
+            position: absolute;
+            top: -20px;
+        }
+        .triangle {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            clip-path: polygon(50% 50%, 95% 5%, 5% 5%);
+            transform-origin: 50% 50%;
+            border-top: 2px solid black; /* Black Lines */
+            border-bottom: 2px solid black;
+        }
+        .t1 { background-color: red; transform: rotate(0deg); }
+        .t2 { background-color: orange; transform: rotate(51.4deg); }
+        .t3 { background-color: yellow; transform: rotate(102.8deg); }
+        .t4 { background-color: green; transform: rotate(154.2deg); }
+        .t5 { background-color: blue; transform: rotate(205.6deg); }
+        .t6 { background-color: indigo; transform: rotate(257deg); }
+        .t7 { background-color: violet; transform: rotate(308.4deg); }
+        .label {
+            position: absolute;
+            top: 25%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 14px;
+            font-weight: bold;
+            color: white;
+            text-align: center;
+        }
+        button {
+            padding: 12px 20px;
+            font-size: 18px;
+            margin-top: 20px;
+            cursor: pointer;
+            background-color: #ffcc00;
+            border: none;
+            border-radius: 5px;
+            color: black;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎡 Spin & Win! 🎉</h1>
+    <div class="wheel-container">
+        <div class="pointer"></div>
+        <div class="wheel" id="wheel">
+            <div class="triangle t1"><div class="label">💰 ₹500</div></div>
+            <div class="triangle t2"><div class="label">🎁 Gift</div></div>
+            <div class="triangle t3"><div class="label">💎 Diamond</div></div>
+            <div class="triangle t4"><div class="label">📱 Smartphone</div></div>
+            <div class="triangle t5"><div class="label">🪙 1000 Coins</div></div>
+            <div class="triangle t6"><div class="label">😍 Surprise</div></div>
+            <div class="triangle t7"><div class="label">❌ Try Again</div></div>
+        </div>
+    </div>
+    <button onclick="spinWheel()">Spin Now</button>
+
+    <script>
+        let prizes = ["💰 ₹500", "🎁 Gift", "💎 Diamond", "📱 Smartphone", "🪙 1000 Coins", "😍 Surprise", "❌ Try Again"];
+        
+        function spinWheel() {
+            let randomDegree = Math.floor(Math.random() * 3600) + 720; // Random rotation
+            let wheel = document.getElementById('wheel');
+
+            wheel.style.transform = `rotate(${randomDegree}deg)`;
+
+            setTimeout(() => {
+                let prizeIndex = Math.floor(Math.random() * prizes.length);
+                alert("🎉 Congratulations! You won: " + prizes[prizeIndex]);
+            }, 4000); // Show prize after animation ends
+        }
+    </script>
+</body>
+</html>

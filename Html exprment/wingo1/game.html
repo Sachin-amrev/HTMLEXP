@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            background-color: #1e1e1e;
+            color: white;
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+        .game-container {
+            margin: 20px auto;
+            max-width: 400px;
+            background: #2a2a2a;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .color-buttons, .number-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .color-buttons button, .number-buttons button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .green { background-color: green; color: white; }
+        .violet { background-color: purple; color: white; }
+        .red { background-color: red; color: white; }
+        .number-buttons button {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 18px;
+            color: white;
+            font-weight: bold;
+            border: 2px solid white;
+        }
+        .selected {
+            background-color: yellow !important;
+            color: black !important;
+        }
+        .bet-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .big, .small {
+            background-color: orange;
+            color: white;
+            font-size: 18px;
+            padding: 10px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .small { background-color: blue; }
+        .history-container {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+        .history-container button {
+            background-color: gold;
+            color: black;
+            padding: 8px 15px;
+            border: none;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .history-table {
+            width: 100%;
+            margin-top: 10px;
+            border-collapse: collapse;
+        }
+        .history-table th, .history-table td {
+            border: 1px solid white;
+            padding: 8px;
+            text-align: center;
+        }
+        .history-table th {
+            background-color: gold;
+            color: black;
+        }
+        .hidden { display: none; }
+
+        /* Chart Table */
+        #chart-table {
+            margin-top: 20px;
+            width: 100%;
+            border-collapse: collapse;
+        }
+        #chart-table th, #chart-table td {
+            border: 1px solid white;
+            padding: 8px;
+            text-align: center;
+        }
+        #chart-table th {
+            background-color: gold;
+            color: black;
+        }
+        .chart-line {
+            position: absolute;
+            border: 2px solid red;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="game-container">
+        <h2>Win11 Club</h2>
+        
+        <div class="color-buttons">
+            <button class="green" onclick="placeBet('Green')">Green</button>
+            <button class="violet" onclick="placeBet('Violet')">Violet</button>
+            <button class="red" onclick="placeBet('Red')">Red</button>
+        </div>
+
+        <div class="number-buttons">
+            <button onclick="placeBet('0')">0</button>
+            <button onclick="placeBet('1')">1</button>
+            <button onclick="placeBet('2')">2</button>
+            <button onclick="placeBet('3')">3</button>
+            <button onclick="placeBet('4')">4</button>
+        </div>
+        <div class="number-buttons">
+            <button onclick="placeBet('5')">5</button>
+            <button onclick="placeBet('6')">6</button>
+            <button onclick="placeBet('7')">7</button>
+            <button onclick="placeBet('8')">8</button>
+            <button onclick="placeBet('9')">9</button>
+        </div>
+
+        <div class="bet-buttons">
+            <button class="big" onclick="placeBet('Big')">Big</button>
+            <button class="small" onclick="placeBet('Small')">Small</button>
+        </div>
+
+        <div class="history-container">
+            <button onclick="toggleHistory('game')">Game History</button>
+            <button onclick="showChart()">Chart</button>
+            <button onclick="toggleHistory('my')">My History</button>
+        </div>
+
+        <table class="history-table" id="game-history">
+            <thead>
+                <tr>
+                    <th>Period</th>
+                    <th>Number</th>
+                    <th>Big/Small</th>
+                    <th>Color</th>
+                </tr>
+            </thead>
+            <tbody id="history-data"></tbody>
+        </table>
+
+        <table class="history-table hidden" id="my-history">
+            <thead>
+                <tr>
+                    <th>Period</th>
+                    <th>Bet Placed</th>
+                </tr>
+            </thead>
+            <tbody id="my-history-data"></tbody>
+        </table>
+
+        <table class="history-table hidden" id="chart-table">
+            <thead>
+                <tr>
+                    <th>Period</th>
+                    <th>Number</th>
+                </tr>
+            </thead>
+            <tbody id="chart-data"></tbody>
+        </table>
+
+    </div>
+
+    <script>
+        let periodNumber = 20250321100051180;
+        let gameHistory = [];
+
+        function updateHistory() {
+            const historyTable = document.getElementById("history-data");
+            periodNumber++;
+
+            let num = Math.floor(Math.random() * 10);
+            let bigSmall = num > 4 ? 'Big' : 'Small';
+            let color = num % 2 === 0 ? 'Red' : 'Green';
+
+            gameHistory.push({ period: periodNumber, number: num });
+
+            const newRow = document.createElement("tr");
+            newRow.innerHTML = `
+                <td>${periodNumber}</td>
+                <td>${num}</td>
+                <td>${bigSmall}</td>
+                <td>${color}</td>
+            `;
+
+            historyTable.prepend(newRow);
+            while (historyTable.rows.length > 10) historyTable.deleteRow(10);
+        }
+
+        function showChart() {
+            const chartTable = document.getElementById("chart-table");
+            const chartData = document.getElementById("chart-data");
+
+            chartData.innerHTML = gameHistory.slice(-10).map(entry => `
+                <tr><td>${entry.period}</td><td>${entry.number}</td></tr>
+            `).join('');
+
+            chartTable.classList.remove("hidden");
+        }
+
+        function placeBet(selection) {
+            alert(`Bet placed on ${selection}!`);
+        }
+
+        function toggleHistory(type) {
+            document.getElementById("game-history").classList.toggle("hidden", type !== "game");
+            document.getElementById("chart-table").classList.toggle("hidden", type !== "chart");
+            document.getElementById("my-history").classList.toggle("hidden", type !== "my");
+        }
+
+        setInterval(updateHistory, 1000);
+    </script>
+
+</body>
+</html>

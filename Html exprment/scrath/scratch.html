@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Scratch & Win</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #0d1b2a;
+      text-align: center;
+      padding: 20px;
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    h1 {
+      color: #00bcd4;
+      margin-bottom: 10px;
+      text-shadow: 1px 1px 5px #00bcd4;
+    }
+
+    #wallet {
+      font-size: 22px;
+      color: #76ff03;
+      margin-bottom: 20px;
+      font-weight: bold;
+    }
+
+    #scratchCard {
+      width: 90%;
+      max-width: 320px;
+      height: 160px;
+      background: #1c2541;
+      margin: 20px auto;
+      position: relative;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 6px 16px rgba(0, 188, 212, 0.3);
+      cursor: pointer;
+    }
+
+    #prize {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: #ffffff;
+      color: #0d47a1;
+      font-size: 32px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1;
+    }
+
+    #canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 2;
+      width: 100%;
+      height: 100%;
+    }
+
+    #message {
+      font-size: 20px;
+      margin-top: 15px;
+      color: #76ff03;
+      font-weight: 500;
+    }
+
+    #nextBtn {
+      display: none;
+      margin-top: 20px;
+      padding: 12px 24px;
+      font-size: 16px;
+      background-color: #00bcd4;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    #nextBtn:hover {
+      background-color: #00acc1;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Scratch & Win</h1>
+  <div id="wallet">Wallet: ₹0</div>
+
+  <div id="scratchCard">
+    <div id="prize">₹10</div>
+    <canvas id="canvas" width="300" height="150"></canvas>
+  </div>
+
+  <div id="message"></div>
+  <button id="nextBtn" onclick="newCard()">Next Scratch Card</button>
+
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const message = document.getElementById('message');
+    const prizeText = document.getElementById('prize');
+    const nextBtn = document.getElementById('nextBtn');
+    const walletDisplay = document.getElementById('wallet');
+    const prizes = [5, 10, 20, 50, 100];
+    let totalWallet = 0;
+    let currentPrize = 0;
+    let scratched = false;
+
+    function initCard() {
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.fillStyle = "#3e5060";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      canvas.style.display = "block";
+      nextBtn.style.display = "none";
+      message.innerText = "";
+      scratched = false;
+
+      currentPrize = prizes[Math.floor(Math.random() * prizes.length)];
+      prizeText.innerText = `₹${currentPrize}`;
+    }
+
+    canvas.addEventListener("mousedown", () => isDrawing = true);
+    canvas.addEventListener("mouseup", () => isDrawing = false);
+    canvas.addEventListener("mousemove", draw);
+    canvas.addEventListener("touchstart", () => isDrawing = true);
+    canvas.addEventListener("touchend", () => isDrawing = false);
+    canvas.addEventListener("touchmove", draw);
+
+    let isDrawing = false;
+
+    function draw(e) {
+      if (!isDrawing) return;
+
+      const rect = canvas.getBoundingClientRect();
+      const x = (e.clientX || e.touches[0].clientX) - rect.left;
+      const y = (e.clientY || e.touches[0].clientY) - rect.top;
+
+      ctx.globalCompositeOperation = "destination-out";
+      ctx.beginPath();
+      ctx.arc(x, y, 15, 0, 2 * Math.PI);
+      ctx.fill();
+
+      checkReveal();
+    }
+
+    function checkReveal() {
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+      let cleared = 0;
+      for (let i = 3; i < imageData.length; i += 4) {
+        if (imageData[i] === 0) cleared++;
+      }
+      let percentage = cleared / (canvas.width * canvas.height) * 100;
+
+      if (percentage > 60 && !scratched) {
+        scratched = true;
+        canvas.style.display = "none";
+        message.innerText = `Congratulations! You won ₹${currentPrize}`;
+        nextBtn.style.display = "inline-block";
+        totalWallet += currentPrize;
+        walletDisplay.innerText = `Wallet: ₹${totalWallet}`;
+      }
+    }
+
+    function newCard() {
+      initCard();
+    }
+
+    initCard();
+  </script>
+
+</body>
+</html>
